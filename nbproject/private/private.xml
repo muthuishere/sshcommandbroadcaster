@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/controller/SettingsController.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/views/MultiMainDialogue.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/controller/SecureProxy.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/views/settings/ServerDetails.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/beans/CommandInfo.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/views/components/CheckComboBox.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/views/components/PopupListener.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/beans/ConnectionInfo.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/test/com/multimachine/test/TestCrypto.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/test/com/multimachine/test/TestSettings.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/exception/GenericLoggerException.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/controller/SshController.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/listeners/SshMessageListener.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/exception/ServerAccessException.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/utils/StringHelper.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/utils/ToStringUtil.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/views/settings/SettingsMain.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/beans/LogData.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/exception/AuthenticationException.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/controller/SecureChannel.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/test/com/multimachine/test/TestConsoleEditor.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/test/com/multimachine/test/TestData.java</file>
+            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/beans/ServerInfo.java</file>
+        </group>
+    </open-files>
+</project-private>
