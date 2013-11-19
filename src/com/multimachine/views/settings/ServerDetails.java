@@ -82,7 +82,7 @@ public class ServerDetails extends javax.swing.JDialog {
                 txtServerPassword.setText(connectionInfo.getServerInfo().getPassword());
                 txtServerUserName.setText(connectionInfo.getServerInfo().getUser());
 
-                cmbServerPort.setSelectedItem(connectionInfo.getServerInfo().getPort() + "");
+                cmbServerPort.setText(connectionInfo.getServerInfo().getPort() + "");
 
             }
             if (null != connectionInfo.getGatewayInfo() && StringHelper.isEmpty(connectionInfo.getGatewayInfo().getHost()) == false) {
@@ -92,7 +92,7 @@ public class ServerDetails extends javax.swing.JDialog {
                 txtTunnelPassword.setText(connectionInfo.getGatewayInfo().getPassword());
                 txtTunnelUserName.setText(connectionInfo.getGatewayInfo().getUser());
 
-                cmbTunnelPort.setSelectedItem(connectionInfo.getGatewayInfo().getPort() + "");
+                cmbTunnelPort.setText(connectionInfo.getGatewayInfo().getPort() + "");
 
                 this.jTabbedPane1.setEnabledAt(1, true);
                 this.chkUseTunnel.setSelected(true);
@@ -174,12 +174,12 @@ public class ServerDetails extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtServerHostName = new javax.swing.JTextField();
-        cmbServerPort = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         txtServerUserName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtServerPassword = new javax.swing.JPasswordField();
         chkUseTunnel = new javax.swing.JCheckBox();
+        cmbServerPort = new javax.swing.JTextField();
         tabTunnel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         txtTunnelHostName = new javax.swing.JTextField();
@@ -187,8 +187,8 @@ public class ServerDetails extends javax.swing.JDialog {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtTunnelPassword = new javax.swing.JPasswordField();
-        cmbTunnelPort = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
+        cmbTunnelPort = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtProfileName = new javax.swing.JTextField();
         lblError = new javax.swing.JLabel();
@@ -233,8 +233,6 @@ public class ServerDetails extends javax.swing.JDialog {
             }
         });
 
-        cmbServerPort.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "21", "22" }));
-
         jLabel3.setText("UserName");
 
         txtServerUserName.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -269,6 +267,10 @@ public class ServerDetails extends javax.swing.JDialog {
             }
         });
 
+        cmbServerPort.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cmbServerPort.setText("22");
+        cmbServerPort.setToolTipText("");
+
         javax.swing.GroupLayout tabHostLayout = new javax.swing.GroupLayout(tabHost);
         tabHost.setLayout(tabHostLayout);
         tabHostLayout.setHorizontalGroup(
@@ -277,31 +279,30 @@ public class ServerDetails extends javax.swing.JDialog {
                 .addGap(20, 20, 20)
                 .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabHostLayout.createSequentialGroup()
-                        .addComponent(chkUseTunnel)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(txtServerUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
+                        .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(tabHostLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(128, 128, 128))
+                            .addComponent(txtServerPassword))
+                        .addGap(39, 39, 39))
                     .addGroup(tabHostLayout.createSequentialGroup()
                         .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(tabHostLayout.createSequentialGroup()
-                                .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(tabHostLayout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(txtServerHostName))
-                                .addGap(18, 18, 18)
-                                .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbServerPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2)))
-                            .addGroup(tabHostLayout.createSequentialGroup()
-                                .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(txtServerUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
-                                .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(tabHostLayout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(128, 128, 128))
-                                    .addComponent(txtServerPassword))))
-                        .addGap(39, 39, 39))))
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtServerHostName))
+                        .addGap(18, 18, 18)
+                        .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(cmbServerPort, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31))
+                    .addGroup(tabHostLayout.createSequentialGroup()
+                        .addComponent(chkUseTunnel)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         tabHostLayout.setVerticalGroup(
             tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,7 +315,7 @@ public class ServerDetails extends javax.swing.JDialog {
                 .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtServerHostName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbServerPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
+                .addGap(27, 27, 27)
                 .addComponent(chkUseTunnel)
                 .addGap(18, 18, 18)
                 .addGroup(tabHostLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -326,7 +327,7 @@ public class ServerDetails extends javax.swing.JDialog {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtServerPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("App Server", tabHost);
@@ -357,38 +358,38 @@ public class ServerDetails extends javax.swing.JDialog {
             }
         });
 
-        cmbTunnelPort.setEditable(true);
-        cmbTunnelPort.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22", "21" }));
-
         jLabel8.setText("Port");
+
+        cmbTunnelPort.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        cmbTunnelPort.setText("22");
+        cmbTunnelPort.setToolTipText("");
 
         javax.swing.GroupLayout tabTunnelLayout = new javax.swing.GroupLayout(tabTunnel);
         tabTunnel.setLayout(tabTunnelLayout);
         tabTunnelLayout.setHorizontalGroup(
             tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabTunnelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabTunnelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tabTunnelLayout.createSequentialGroup()
-                        .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(tabTunnelLayout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtTunnelHostName))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(tabTunnelLayout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(18, 18, 18))
-                            .addComponent(cmbTunnelPort, 0, 46, Short.MAX_VALUE)))
-                    .addGroup(tabTunnelLayout.createSequentialGroup()
+                .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, tabTunnelLayout.createSequentialGroup()
                         .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(txtTunnelUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                         .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel7)
-                            .addComponent(txtTunnelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtTunnelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(tabTunnelLayout.createSequentialGroup()
+                        .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(tabTunnelLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtTunnelHostName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(cmbTunnelPort, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(4, 4, 4)))
                 .addGap(49, 49, 49))
         );
         tabTunnelLayout.setVerticalGroup(
@@ -402,7 +403,7 @@ public class ServerDetails extends javax.swing.JDialog {
                 .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTunnelHostName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbTunnelPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52)
+                .addGap(71, 71, 71)
                 .addGroup(tabTunnelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(tabTunnelLayout.createSequentialGroup()
                         .addComponent(jLabel6)
@@ -412,7 +413,7 @@ public class ServerDetails extends javax.swing.JDialog {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTunnelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Tunnel", tabTunnel);
@@ -514,7 +515,7 @@ public class ServerDetails extends javax.swing.JDialog {
                     connectionInfo.setProfileName(txtProfileName.getText());
                 }
 
-                serverInfo.setPort(Integer.parseInt(cmbServerPort.getSelectedItem().toString()));
+                serverInfo.setPort(Integer.parseInt(cmbServerPort.getText()));
 
                 if (chkUseTunnel.isSelected()) {
 
@@ -536,7 +537,7 @@ public class ServerDetails extends javax.swing.JDialog {
                         tunnelInfo.setUser(txtTunnelUserName.getText());
                     }
 
-                    tunnelInfo.setPort(Integer.parseInt(cmbTunnelPort.getSelectedItem().toString()));
+                    tunnelInfo.setPort(Integer.parseInt(cmbTunnelPort.getText()));
                 }
 
                 if (!StringHelper.isEmpty(errText)) {
@@ -698,8 +699,8 @@ public class ServerDetails extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JCheckBox chkUseTunnel;
-    private javax.swing.JComboBox cmbServerPort;
-    private javax.swing.JComboBox cmbTunnelPort;
+    private javax.swing.JTextField cmbServerPort;
+    private javax.swing.JTextField cmbTunnelPort;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

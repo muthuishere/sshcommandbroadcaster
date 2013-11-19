@@ -15,6 +15,8 @@
  */
 package com.multimachine.utils;
 
+import java.security.Provider;
+import java.security.Security;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -29,13 +31,24 @@ public class CryptHelper {
 
     private static final Logger log = Logger.getLogger(CryptHelper.class);
 
+    static final String  ENCRYPT_TYPE="AES/ECB/PKCS7Padding";
+      //static final String  ENCRYPT_TYPE="AES/CBC/PKCS5Padding";
     private static byte[] key = {
         0x74, 0x68, 0x69, 0x73, 0x49, 0x73, 0x41, 0x53, 0x65, 0x63, 0x72, 0x65, 0x74, 0x4b, 0x65, 0x79
     };//"thisIsASecretKey";
 
+    
+    static{
+     Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());    
+    }
+    
     public static String encrypt(String strToEncrypt) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            
+
+            
+            
+            Cipher cipher = Cipher.getInstance(ENCRYPT_TYPE,"BC");
             final SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             final String encryptedString = Base64.encodeBase64String(cipher.doFinal(strToEncrypt.getBytes()));
@@ -49,7 +62,15 @@ public class CryptHelper {
 
     public static String decrypt(String strToDecrypt) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+            
+//                for (Provider provider: Security.getProviders()) {
+//  log.info(provider.getName());
+//  for (String key: provider.stringPropertyNames())
+//   log.info("\t" + key + "\t" + provider.getProperty(key));
+//}
+                
+                
+            Cipher cipher = Cipher.getInstance(ENCRYPT_TYPE,"BC");
             final SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             final String decryptedString = new String(cipher.doFinal(Base64.decodeBase64(strToDecrypt)));

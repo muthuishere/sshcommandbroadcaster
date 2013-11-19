@@ -30,6 +30,7 @@ public class CommandFilter extends DocumentFilter {
 
     private static final Logger log = Logger.getLogger(CommandFilter.class);
 
+@SuppressWarnings("unchecked")
     public boolean handleApplicationCommand(String cmd) {
 
         for (Method method : parent.getClass().getMethods()) {
@@ -42,7 +43,8 @@ public class CommandFilter extends DocumentFilter {
                         ConsoleCommand a = method.getAnnotation(ConsoleCommand.class);
                         if (cmd.equals(a.value())) {
                             System.out.println(cmd + " has a handler" + method);
-                            method.invoke(parent, null);
+                            Object obj=null;
+                            method.invoke(parent,  null);
                             return true;
 
                         }

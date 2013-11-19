@@ -44,7 +44,7 @@ public class SshController {
     Session session = null;
     SecureChannel secureChannel = null;
     SshMessageListener sshMessageListener = null;
-    
+    ByteArrayOutputStream baos = null;
     ConnectionInfo connectionInfo = null;
     boolean terminateCmd = false;
     boolean executing = false;
@@ -323,7 +323,8 @@ public class SshController {
             //channel.setOutputStream(System.out);
             //FileOutputStream fos=new FileOutputStream("/tmp/stderr");
             //((ChannelExec)channel).setErrStream(fos);
-            ((ChannelExec) channel).setErrStream(System.err);
+            baos = new ByteArrayOutputStream();
+            ((ChannelExec) channel).setErrStream(baos);
 
             InputStream in = channel.getInputStream();
             OutputStream out = channel.getOutputStream();
@@ -371,7 +372,7 @@ public class SshController {
 
                 if (terminateCmd) {
                     log.info("Sending terminate signal");
-                    res = res + new String("Terminate signal received for " + commandInfo.getCmd());
+                    res = res + StringHelper.NEW_LINE + new String("Terminate signal received for " + commandInfo.getCmd());
                     completeres = completeres + res;
                     out.write(3);//Send terminate command signal
                     out.flush();
@@ -381,6 +382,21 @@ public class SshController {
 
                 if (channel.isClosed()) {
                     log.info("exit-status: " + channel.getExitStatus());
+                    
+                    //check for error
+                    if(null != baos && baos.size() > 0){
+                    
+                        String str = baos.toString("UTF-8");
+                    
+                        if(!StringHelper.isEmpty(res))
+                            res = res + StringHelper.NEW_LINE;    
+                        
+                        res=res + str;
+                        completeres = completeres + res;
+                        commandInfo.setErrMsg(str);
+                        commandInfo.setError(true);
+                    }
+                    
                     break;
                 }
                 try {

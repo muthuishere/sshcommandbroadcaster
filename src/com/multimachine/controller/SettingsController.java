@@ -21,6 +21,8 @@ import com.multimachine.utils.CryptHelper;
 import com.multimachine.utils.FileHelper;
 import com.thoughtworks.xstream.XStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -53,6 +55,9 @@ public class SettingsController {
 
     public Settings retrieveSettingsFromFile() {
         try {
+            if(!FileHelper.isFileExists(filepath))
+                throw new Exception("Settings file does not exists");
+            
             String contents = FileHelper.readFileAsString(filepath);
 
             Settings settings = (Settings) xstream.fromXML(contents);
@@ -76,8 +81,13 @@ public class SettingsController {
             return settings;
         } catch (IOException ex) {
             log.error(ex);
+        }catch (Exception ex) {
+            log.error(ex);
         }
-        return null;
+        //return empty 
+        Settings settings =new Settings();
+        settings.setList(new ArrayList<ConnectionInfo>());
+        return new Settings();
 
     }
 

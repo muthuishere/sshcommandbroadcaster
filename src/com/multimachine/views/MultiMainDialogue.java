@@ -32,6 +32,7 @@ import java.util.Set;
 import com.multimachine.views.components.CheckComboBox;
 import com.multimachine.views.settings.SettingsMain;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -94,6 +95,8 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
         this.setTitle("SSH-Command Broadcaster");
 
         resetSettings(false);
+        
+        
         cmbServerBox = new CheckComboBox(set);
         cmbServerBox.setVisible(true);
 
@@ -123,6 +126,12 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
         ImageIcon icon = new ImageIcon(iconURL);
         this.setIconImage(icon.getImage());
 
+        if(set.size() == 0){
+        
+            ActionEvent e = new ActionEvent(btnSettings ,1234,"click");
+            this.btnSettingsActionPerformed(e);
+        
+        }
     }
 
     public void showWarning(String msg, String title) {
@@ -508,8 +517,8 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 
-                System.out.println("info.getName()" + info.getName());
-                if ("alkaNimbus".equals(info.getName())) {
+              //  System.out.println("info.getName()" + info.getName());
+                if ("Nowork".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

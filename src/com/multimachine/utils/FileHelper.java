@@ -30,6 +30,12 @@ public class FileHelper {
 
     private static final Logger log = Logger.getLogger(FileHelper.class);
 
+      public static boolean isFileExists(String filePath)  {
+
+          
+        File file = new File(filePath);
+        return (file.exists()       );
+      }
     public static String readFileAsString(String filePath) throws java.io.IOException {
 
         File file = new File(filePath);

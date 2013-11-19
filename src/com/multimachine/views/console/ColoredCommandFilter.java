@@ -30,7 +30,7 @@ public class ColoredCommandFilter extends DocumentFilter {
     private ColoredSwingConsoleWindow parent;
 
     private static final Logger log = Logger.getLogger(ColoredCommandFilter.class);
-
+@SuppressWarnings("unchecked")
     public boolean handleApplicationCommand(String cmd) {
 
         for (Method method : parent.getClass().getMethods()) {
@@ -43,6 +43,7 @@ public class ColoredCommandFilter extends DocumentFilter {
                         ConsoleCommand a = method.getAnnotation(ConsoleCommand.class);
                         if (cmd.equals(a.value())) {
                             System.out.println(cmd + " has a handler" + method);
+                           
                             method.invoke(parent, null);
                             return true;
 
