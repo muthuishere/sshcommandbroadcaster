@@ -15,6 +15,7 @@
  */
 package com.multimachine.views.console;
 
+import com.multimachine.utils.StringHelper;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import javax.swing.text.*;
@@ -26,10 +27,9 @@ import org.apache.log4j.Logger;
  */
 public class CommandFilter extends DocumentFilter {
 
-    private SwingConsoleWindow parent;
+    private ConsoleWindow parent;
 
     private static final Logger log = Logger.getLogger(CommandFilter.class);
-
 @SuppressWarnings("unchecked")
     public boolean handleApplicationCommand(String cmd) {
 
@@ -43,8 +43,8 @@ public class CommandFilter extends DocumentFilter {
                         ConsoleCommand a = method.getAnnotation(ConsoleCommand.class);
                         if (cmd.equals(a.value())) {
                             System.out.println(cmd + " has a handler" + method);
-                            Object obj=null;
-                            method.invoke(parent,  null);
+                           
+                            method.invoke(parent, null);
                             return true;
 
                         }
@@ -58,7 +58,7 @@ public class CommandFilter extends DocumentFilter {
 
     }
 
-    public CommandFilter(SwingConsoleWindow parent) {
+    public CommandFilter(ConsoleWindow parent) {
         this.parent = parent;
 
     }
@@ -90,14 +90,27 @@ public class CommandFilter extends DocumentFilter {
         Element cur = root.getElement(index);
         int promptPosition = cur.getStartOffset() + parent.prompt.length();
 
+        /*
+         log.info(text.equals(StringHelper.NEW_LINE) +" is new line , Inside replace" + text);
+         log.info(text.equals("\n") +" is new line , Inside replace" + text);
+        
+         log.info(text.length() + "text length Ascii value " +((int) text.charAt(0)));
+         log.info(text.length() + "text length new line " +((int) '\n'));
+         log.info((index == count - 1) +"index == count - 1" );
+         log.info((offset) +"offset" );
+         log.info((promptPosition) +"promptPosition" );
+         */
         if (index == count - 1 && offset - promptPosition >= 0) {
             if (text.equals("\n")) {
                 String cmd = doc.getText(promptPosition, offset - promptPosition);
                 if (cmd.isEmpty()) {
-                    text = "\n" + parent.prompt;
+                    //text = "\n"+ parent.s;
+                    parent.showPrompt(true);
+                    return;
                 } else {
+                    log.info("Command object fetched " + cmd);
                     if (!handleApplicationCommand(cmd)) {
-                        parent.getConsoleCallBack().onCommand(cmd);
+                        parent.sendCommand(cmd);
                     }
 
                     //return;

@@ -18,16 +18,20 @@ package com.multimachine.views.settings;
 import com.multimachine.beans.ConnectionInfo;
 import com.multimachine.beans.Settings;
 import com.multimachine.controller.SettingsController;
+import com.multimachine.utils.ImportHelper;
 import com.multimachine.utils.StringHelper;
+import com.multimachine.views.components.ImportFileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -67,7 +71,7 @@ public class SettingsMain extends javax.swing.JDialog {
     public SettingsMain(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+progressbar.setVisible(false);
         URL iconURL = getClass().getResource("/com/multimachine/resources/red/16x16/app.png");
         // iconURL is null when not found
         ImageIcon icon = new ImageIcon(iconURL);
@@ -99,6 +103,16 @@ public class SettingsMain extends javax.swing.JDialog {
         });
     }
 
+       public void showError(String msg, String title) {
+
+        JOptionPane.showMessageDialog(this, msg, title, JOptionPane.ERROR_MESSAGE);
+
+    }
+        public void showMsg(String msg, String title) {
+
+        JOptionPane.showMessageDialog(this, msg, title, JOptionPane.INFORMATION_MESSAGE);
+
+    }
     public ConnectionInfo getConnectInfoForProfile(int index) {
 
         if (null != settings && null != settings.getConnectionInfo()) {
@@ -168,6 +182,8 @@ public class SettingsMain extends javax.swing.JDialog {
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        btnImport = new javax.swing.JButton();
+        progressbar = new javax.swing.JProgressBar();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -222,24 +238,40 @@ public class SettingsMain extends javax.swing.JDialog {
             }
         });
 
+        btnImport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/multimachine/resources/winscp.png"))); // NOI18N
+        btnImport.setText("Import");
+        btnImport.setToolTipText("Import from Winscp");
+        btnImport.setVerifyInputWhenFocusTarget(false);
+        btnImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(progressbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(44, 44, 44))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnImport)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(44, 44, 44))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,8 +287,12 @@ public class SettingsMain extends javax.swing.JDialog {
                         .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(okButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(progressbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -351,6 +387,50 @@ public class SettingsMain extends javax.swing.JDialog {
         }.start();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
+        // TODO add your handling code here:
+        
+       
+               JFileChooser fileChooser = new JFileChooser();
+               fileChooser.setFileFilter(new ImportFileFilter());
+if (fileChooser.showOpenDialog(SettingsMain.this) == JFileChooser.APPROVE_OPTION) {
+ log.info(fileChooser.getSelectedFile().getAbsolutePath());
+ String filename=fileChooser.getSelectedFile().getAbsolutePath();
+ 
+  ArrayList<ConnectionInfo> lsttmpConnections;
+        try {
+            progressbar.setVisible(true);
+            progressbar.setValue(25);
+            lsttmpConnections = ImportHelper.importWinscp(filename);
+            progressbar.setValue(75);
+            if(null == lsttmpConnections || lsttmpConnections.size() ==0)
+                throw new Exception("No server details Identified in file");
+            for(ConnectionInfo connectInfo:lsttmpConnections){
+            
+            progressbar.setValue(progressbar.getValue()+1);
+                  settings.getConnectionInfo().add(connectInfo);
+                    listServers.addElement(connectInfo.getProfileName());
+            }
+            
+             progressbar.setValue(100);
+           
+        } catch (Exception ex) {
+          log.error(ex);
+            showError("Unable to Import settings !!" +ex.getMessage(), "Error");
+       
+       
+        }finally{
+        progressbar.setVisible(false);
+        
+        }
+  // load from file
+}
+
+
+       
+        
+    }//GEN-LAST:event_btnImportActionPerformed
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -402,9 +482,11 @@ public class SettingsMain extends javax.swing.JDialog {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnImport;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList lstServerProfiles;
     private javax.swing.JButton okButton;
+    private javax.swing.JProgressBar progressbar;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
 }

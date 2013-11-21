@@ -16,8 +16,8 @@
 package com.multimachine.test;
 
 import com.multimachine.beans.ProfileStyle;
-import com.multimachine.views.console.ConsoleCallBack;
-import com.multimachine.views.console.ColoredSwingConsoleWindow;
+import com.multimachine.listeners.MultiMessageBroadcaster;
+import com.multimachine.views.console.ConsoleWindow;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -27,9 +27,9 @@ import org.apache.log4j.Logger;
  *
  * @author hutchuk
  */
-public class TestConsoleCallBack implements ConsoleCallBack {
+public class TestConsoleCallBack implements MultiMessageBroadcaster {
 
-    ColoredSwingConsoleWindow console;
+    ConsoleWindow console;
     private static final Logger log = Logger.getLogger(TestConsoleCallBack.class);
 
     public TestConsoleCallBack(String bashName) {
@@ -39,27 +39,36 @@ public class TestConsoleCallBack implements ConsoleCallBack {
         profileStyle.setHostName("localhost");
         profileStyle.setColor(Color.RED);
         lstProfileStyles.add(profileStyle);
-        console = new ColoredSwingConsoleWindow(this, lstProfileStyles);
+        console = new ConsoleWindow(this, lstProfileStyles);
         console.setVisible(true);
     }
 
+ 
+
     @Override
-    public void onCommand(final String cmd) {
-        log.info("Command received " + cmd);
+    public void broadcastCommand(final String cmd) {
+         log.info("Command received " + cmd);
 
         new Thread() {
             public void run() {
 
                 try {
-                    console.onResponse("Halo" + cmd, "localhost");
+                    console.onResponse("Halo" + cmd, "localhost",false);
                     Thread.sleep(1000);
-                    console.onCompleteResponse();
+                    console.onResponse("Halo end " + cmd, "localhost",true);
                 } catch (InterruptedException ex) {
                     java.util.logging.Logger.getLogger(TestConsoleCallBack.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
         }.start();
+    
+    
+    }
+
+    @Override
+    public void showParent() {
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

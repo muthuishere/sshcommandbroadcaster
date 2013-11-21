@@ -23,24 +23,33 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="okButton" min="-2" pref="67" max="-2" attributes="0"/>
+                      <Component id="progressbar" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="jScrollPane1" pref="283" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnAdd" min="-2" pref="47" max="-2" attributes="0"/>
-                          <Component id="btnEdit" min="-2" pref="47" max="-2" attributes="0"/>
-                          <Component id="btnDelete" min="-2" pref="47" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="btnImport" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="okButton" min="-2" pref="67" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="jScrollPane1" pref="274" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="btnAdd" min="-2" pref="47" max="-2" attributes="0"/>
+                                  <Component id="btnEdit" min="-2" pref="47" max="-2" attributes="0"/>
+                                  <Component id="btnDelete" min="-2" pref="47" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
+                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -61,8 +70,13 @@
                       <Component id="btnDelete" min="-2" pref="42" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="40" max="32767" attributes="0"/>
-              <Component id="okButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="progressbar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="okButton" max="32767" attributes="0"/>
+                  <Component id="btnImport" pref="0" max="32767" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -103,7 +117,7 @@
     <Component class="javax.swing.JButton" name="btnAdd">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/tcs/logger/resources/blue/24x24/add_notes.png"/>
+          <Image iconType="3" name="/com/multimachine/resources/blue/24x24/add_notes.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Add Server Profile"/>
         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -115,11 +129,11 @@
     <Component class="javax.swing.JButton" name="btnEdit">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/tcs/logger/resources/blue/24x24/edit_notes.png"/>
+          <Image iconType="3" name="/com/multimachine/resources/blue/24x24/edit_notes.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Edit Server Profile"/>
         <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/tcs/logger/resources/grey/24x24/edit_notes.png"/>
+          <Image iconType="3" name="/com/multimachine/resources/grey/24x24/edit_notes.png"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -131,11 +145,11 @@
     <Component class="javax.swing.JButton" name="btnDelete">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/tcs/logger/resources/blue/24x24/delete_notes.png"/>
+          <Image iconType="3" name="/com/multimachine/resources/blue/24x24/delete_notes.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Delete Server Profile"/>
         <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/tcs/logger/resources/grey/24x24/delete_notes.png"/>
+          <Image iconType="3" name="/com/multimachine/resources/grey/24x24/delete_notes.png"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
         <Property name="verticalTextPosition" type="int" value="3"/>
@@ -143,6 +157,21 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnImport">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/com/multimachine/resources/winscp.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Import"/>
+        <Property name="toolTipText" type="java.lang.String" value="Import from Winscp"/>
+        <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnImportActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JProgressBar" name="progressbar">
     </Component>
   </SubComponents>
 </Form>

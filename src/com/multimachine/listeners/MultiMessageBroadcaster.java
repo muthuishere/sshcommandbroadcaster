@@ -21,5 +21,6 @@ package com.multimachine.listeners;
  */
 public interface MultiMessageBroadcaster {
 
-    public void onBroadcastMessage(String cmd);
+    public void broadcastCommand(String cmd);
+    public void showParent();
 }

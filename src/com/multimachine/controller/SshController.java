@@ -77,8 +77,8 @@ public class SshController {
 
     public SshController(ConnectionInfo connectionInfo, SshMessageListener sshMessageListener) throws GenericLoggerException {
 
-        log.info("connectionInfo  " + connectionInfo.toString());
-        log.info("connectionInfo password " + connectionInfo.getServerInfo().getPassword());
+      //  log.info("connectionInfo  " + connectionInfo.toString());
+       // log.info("connectionInfo password " + connectionInfo.getServerInfo().getPassword());
         secureChannel = new SecureChannel();
         this.sshMessageListener = sshMessageListener;
 
@@ -233,9 +233,7 @@ public class SshController {
 
     public void sendExecuteMsg(CommandInfo commandInfo, String res, boolean flgCompleted) {
 
-        Vector<String> v = null;
-        v = new Vector<String>();
-
+       
         if (null == res) {
             return;
         }
@@ -249,16 +247,16 @@ public class SshController {
 
             StringBuilder formattedResponse = new StringBuilder();
 
-            log.info(lines.length);
+           // log.info(lines.length);
 
             for (int y = 0; y < lines.length; y++) {
-                log.info(lines[y]);
+                //log.info(lines[y]);
                 if (y > 0) {
                     formattedResponse.append(StringHelper.NEW_LINE);
                 }
 
                 String curLine = lines[y];//StringHelper.removeUnicodeAndEscapeChars(lines[y]);
-                printStringcode(curLine);
+               // printStringcode(curLine);
 
                 formattedResponse.append("[").append(connectionInfo.getServerInfo().getHost()).append("]");
                 formattedResponse.append(curLine);
@@ -266,9 +264,9 @@ public class SshController {
             }
 
             commandInfo.setResponse(formattedResponse.toString());
-            log.info(formattedResponse.toString());
+            log.info("Command Response sending " + formattedResponse.toString());
         }
-        log.info("Sending back");
+      //  log.info("Sending back");
         sshMessageListener.onReceiveExecuteMessage(commandInfo, flgCompleted);
 
     }
@@ -293,6 +291,7 @@ public class SshController {
         }
 
         try {
+             log.info("Executing command" + commandInfo.getCmd());
             executing = true;
             terminateCmd = false;
             channel = session.openChannel("exec");

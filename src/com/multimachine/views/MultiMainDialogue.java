@@ -19,25 +19,21 @@ import com.multimachine.beans.CommandInfo;
 import com.multimachine.beans.ConnectionInfo;
 import com.multimachine.beans.ProfileStyle;
 import com.multimachine.beans.Settings;
-import com.multimachine.controller.ColoredConsoleController;
-import com.multimachine.listeners.SshMessageListener;
 import com.multimachine.controller.ConsoleController;
 import com.multimachine.controller.SettingsController;
 import com.multimachine.controller.SshController;
 import com.multimachine.exception.GenericLoggerException;
 import com.multimachine.listeners.MultiMessageBroadcaster;
+import com.multimachine.listeners.SshMessageListener;
 import com.multimachine.utils.StringHelper;
-import java.util.HashSet;
-import java.util.Set;
 import com.multimachine.views.components.CheckComboBox;
 import com.multimachine.views.settings.SettingsMain;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -48,7 +44,7 @@ import javax.swing.JOptionPane;
 public class MultiMainDialogue extends javax.swing.JDialog implements SshMessageListener, MultiMessageBroadcaster {
 
     //private  ConsoleController consoleController = null;
-    private ColoredConsoleController consoleController = null;
+    private ConsoleController consoleController = null;
     ArrayList<SshController> lstSshController = null;
     ArrayList<CommandInfo> lstCommandInfo = null;
     Set<String> set = new HashSet<String>();
@@ -182,7 +178,7 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
 
     }
 
-    public void onBroadcastMessage(final String cmd) {
+    public void broadcastCommand(final String cmd) {
 
         if (null == lstSshController || lstSshController.size() == 0) {
             return;
@@ -226,32 +222,29 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
     @Override
     public void onReceiveExecuteMessage(CommandInfo commandInfo, boolean flgComplete) {
 
-        log.info(commandInfo.toString());
+       // log.info(commandInfo.toString());
 
+        boolean flgCanEnd=false;
+        
+         if (flgComplete) {
+            flgCanEnd=handleCommandComplete(commandInfo);
+        }
         if (commandInfo.isBufferedOutput() && flgComplete) {
             //DOnt send as the out put is already sent as buffer
+            commandInfo.setResponse(null);
+              consoleController.sendResponse(commandInfo,flgCanEnd);
         } else {
-            consoleController.sendResponse(commandInfo);
+            consoleController.sendResponse(commandInfo,flgCanEnd);
         }
 
-        if (flgComplete) {
-            handleCommandComplete(commandInfo);
-        }
+       
     }
 
-    public void handleCommandComplete(CommandInfo commandInfo) {
+    public boolean handleCommandComplete(CommandInfo commandInfo) {
 
         lstCommandInfo.add(commandInfo);
 
-        if (lstCommandInfo.size() == lstSshController.size()) {
-            try {
-                Thread.sleep(1000);
-                consoleController.sendCompleteResponse(commandInfo);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MultiMainDialogue.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
+        return (lstCommandInfo.size() == lstSshController.size()) ;
 
     }
 
@@ -331,9 +324,13 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
         setModal(false);
         setVisible(false);
 
-        consoleController = new ColoredConsoleController(this, lstProfileStyles);
+        consoleController = new ConsoleController(this, lstProfileStyles);
     }
-
+    @Override
+    public void showParent() {
+     
+    
+    }
     public void appendTxt(final String msg) {
 
         new Thread() {
@@ -507,7 +504,11 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
+        start();        
+    }
+    public static void start() {
         /* Set the Nimbus look and feel */
 
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -560,5 +561,7 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
     private javax.swing.JTextArea txtConectConsole;
     // End of variables declaration//GEN-END:variables
  private CheckComboBox cmbServerBox;
+
+
 
 }

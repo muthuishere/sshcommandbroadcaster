@@ -16,7 +16,7 @@
 package com.multimachine.test;
 
 import com.multimachine.beans.ConnectionInfo;
-import com.multimachine.beans.LogData;
+
 import com.multimachine.beans.ServerInfo;
 import java.util.Random;
 

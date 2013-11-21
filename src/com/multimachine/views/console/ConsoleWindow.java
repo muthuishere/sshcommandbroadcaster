@@ -16,7 +16,10 @@
 package com.multimachine.views.console;
 
 import com.multimachine.beans.ProfileStyle;
+import com.multimachine.controller.ConsoleController;
+import com.multimachine.listeners.MultiMessageBroadcaster;
 import com.multimachine.utils.StringHelper;
+import com.multimachine.views.MultiMainDialogue;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -34,9 +37,9 @@ import org.apache.log4j.Logger;
  *
  * @author hutchuk
  */
-public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
+public class ConsoleWindow extends javax.swing.JFrame {
 
-    private ConsoleCallBack consoleCallBack;
+    private MultiMessageBroadcaster consoleCallBack;
 
     private boolean executing = false;
 
@@ -52,9 +55,9 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
     int commandIndex = 0;
     private ArrayList<ProfileStyle> lstProfileStyles = null;
 
-    private static final Logger log = Logger.getLogger(ColoredSwingConsoleWindow.class);
+    private static final Logger log = Logger.getLogger(ConsoleWindow.class);
 
-    public ColoredSwingConsoleWindow(ConsoleCallBack consoleCallBack, ArrayList<ProfileStyle> lstProfileStyles) {
+    public ConsoleWindow(MultiMessageBroadcaster consoleCallBack, ArrayList<ProfileStyle> lstProfileStyles) {
         this("", consoleCallBack, lstProfileStyles);
 
     }
@@ -62,7 +65,7 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
     /**
      * Creates new form SwingConsoleWindow
      */
-    public ColoredSwingConsoleWindow(String initmessage, ConsoleCallBack consoleCallBack, ArrayList<ProfileStyle> lstProfileStyles) {
+    public ConsoleWindow(String initmessage, MultiMessageBroadcaster consoleCallBack, ArrayList<ProfileStyle> lstProfileStyles) {
         initComponents();
         URL iconURL = getClass().getResource("/com/multimachine/resources/red/16x16/app.png");
         // iconURL is null when not found
@@ -122,9 +125,12 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
     public void exitWindow() {
         log.info("This method is written to exit");
 
+        //this.consoleCallBack.showParent();
         this.processWindowEvent(
                 new WindowEvent(
                 this, WindowEvent.WINDOW_CLOSING));
+        
+            //MultiMainDialogue.start();
 
     }
 
@@ -133,7 +139,7 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
         new Thread() {
             public void run() {
                 setExecuting(true);
-                consoleCallBack.onCommand(cmd);
+                consoleCallBack.broadcastCommand(cmd);
 
             }
         }.start();
@@ -144,36 +150,40 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
 
         if (flgEnable) {
             ((AbstractDocument) txtAreaConsole.getDocument()).setDocumentFilter(
-                    new ColoredCommandFilter(this));
+                    new CommandFilter(this));
         } else {
             ((AbstractDocument) txtAreaConsole.getDocument()).setDocumentFilter(
                     null);
         }
     }
 
-    public void onCompleteResponse() {
+   
+
+    public void onResponse(final String msg, final String hostname,final boolean flgComplete) {
 
         new Thread() {
             public void run() {
 
-                setDocumentFilter(false);
-                txtAreaConsole.setEditable(true);
-                showPrompt(true);
+                
 
-                setDocumentFilter(true);
-            }
-        }.start();
-    }
+                if(!StringHelper.isEmpty(msg)){
+                
+                    String curMsg=msg;
+                    if(!flgComplete)
+                      curMsg=curMsg+StringHelper.NEW_LINE;
+                    
+                            appendText(curMsg, hostname);
+                }
+                
+                
+                if(flgComplete){
+                        setDocumentFilter(false);
+                        txtAreaConsole.setEditable(true);
+                        showPrompt(true);
 
-    public void onResponse(final String msg, final String hostname) {
-
-        new Thread() {
-            public void run() {
-
-                log.info(msg + "received");
-
-                appendText(msg, hostname);
-
+                        setDocumentFilter(true);
+                }
+                log.info(msg + " displayed in window");
             }
         }.start();
 
@@ -183,7 +193,7 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
         try {
             txtAreaConsole.getStyledDocument().insertString(txtAreaConsole.getDocument().getLength(), txt, null);
         } catch (BadLocationException ex) {
-            java.util.logging.Logger.getLogger(ColoredSwingConsoleWindow.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsoleWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -241,11 +251,11 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
         txtAreaConsole.setEditable(true);
     }
 
-    public ConsoleCallBack getConsoleCallBack() {
+    public MultiMessageBroadcaster getConsoleCallBack() {
         return consoleCallBack;
     }
 
-    public void setConsoleCallBack(ConsoleCallBack consoleCallBack) {
+    public void setConsoleCallBack(MultiMessageBroadcaster consoleCallBack) {
         this.consoleCallBack = consoleCallBack;
     }
 
@@ -299,7 +309,7 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
             new Thread() {
                 public void run() {
 
-                    consoleCallBack.onCommand(prompt);
+                    consoleCallBack.broadcastCommand(prompt);
 
                 }
             }.start();
@@ -327,20 +337,20 @@ public class ColoredSwingConsoleWindow extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ColoredSwingConsoleWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsoleWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ColoredSwingConsoleWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsoleWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ColoredSwingConsoleWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsoleWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ColoredSwingConsoleWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConsoleWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //new ColoredSwingConsoleWindow().setVisible(true);
+                //new ConsoleWindow().setVisible(true);
             }
         });
     }

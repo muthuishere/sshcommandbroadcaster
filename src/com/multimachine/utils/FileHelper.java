@@ -36,6 +36,8 @@ public class FileHelper {
         File file = new File(filePath);
         return (file.exists()       );
       }
+      
+     
     public static String readFileAsString(String filePath) throws java.io.IOException {
 
         File file = new File(filePath);

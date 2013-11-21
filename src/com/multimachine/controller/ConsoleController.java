@@ -16,43 +16,39 @@
 package com.multimachine.controller;
 
 import com.multimachine.beans.CommandInfo;
+import com.multimachine.beans.ProfileStyle;
 import com.multimachine.listeners.MultiMessageBroadcaster;
-import com.multimachine.views.console.ConsoleCallBack;
-import com.multimachine.views.console.SwingConsoleWindow;
+import com.multimachine.views.console.ConsoleWindow;
+
+
+import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author hutchuk
  */
-public class ConsoleController implements ConsoleCallBack {
+public class ConsoleController  {
 
-    SwingConsoleWindow console;
+    ConsoleWindow console;
 
     private static final Logger log = Logger.getLogger(ConsoleController.class);
     MultiMessageBroadcaster multiMessageBroadcaster = null;
 
-    public ConsoleController(MultiMessageBroadcaster multiMessageBroadcaster, String bashName) {
+    public ConsoleController(MultiMessageBroadcaster multiMessageBroadcaster, ArrayList<ProfileStyle> lstProfileStyles) {
         this.multiMessageBroadcaster = multiMessageBroadcaster;
-        console = new SwingConsoleWindow(bashName, this);
+        console = new ConsoleWindow(multiMessageBroadcaster, lstProfileStyles);
         console.setVisible(true);
     }
 
-    public void sendCompleteResponse(final CommandInfo commandInfo) {
-
-        new Thread() {
-            public void run() {
-
-                log.info("Response Completed ");
-
-                console.onCompleteResponse();
-
-            }
-        }.start();
-
+ 
+    public void showParent(){
+    
+    multiMessageBroadcaster.showParent();
     }
+    
 
-    public void sendResponse(final CommandInfo commandInfo) {
+    public void sendResponse(final CommandInfo commandInfo,final boolean flgComplete) {
 
         final String response = commandInfo.getResponse();
 
@@ -61,21 +57,7 @@ public class ConsoleController implements ConsoleCallBack {
 
                 log.info("Response received " + response);
 
-                console.onResponse(response);
-
-            }
-        }.start();
-
-    }
-
-    @Override
-    public void onCommand(final String cmd) {
-        log.info("Command received " + cmd);
-
-        new Thread() {
-            public void run() {
-
-                multiMessageBroadcaster.onBroadcastMessage(cmd);
+                console.onResponse(response, commandInfo.getConnectionInfo().getServerInfo().getHost(),flgComplete);
 
             }
         }.start();
