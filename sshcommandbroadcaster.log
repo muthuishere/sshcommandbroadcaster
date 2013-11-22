@@ -596,3 +596,113 @@ Caused by: com.jcraft.jsch.JSchException: Auth fail
 2013-11-22 16:30:58,031 [ INFO] [] [ConnectServer] Attempting to connect 127.0.0.1
 2013-11-22 16:30:58,031 [ INFO] [] [ConnectServer] Using username hutchuk
 2013-11-22 16:30:58,031 [ INFO] [] [ConnectServer] Enter  password for hutchuk@127.0.0.1
+2013-11-22 17:04:46,250 [ INFO] [] [FileHelper] Attempting to read fileC:\muthu\multimachineexecute\gitversion\sshcommandbroadcaster\settings.xml//settings.xml
+2013-11-22 17:04:54,609 [ INFO] [] [ConnectServer] Opened
+2013-11-22 17:04:54,609 [ INFO] [] [ConnectServer] Started threads
+2013-11-22 17:04:54,609 [ INFO] [] [ConnectServer] Starting connectionhutchuk@127.0.0.1
+2013-11-22 17:04:54,609 [ INFO] [] [ConnectServer] Attempting to connect 127.0.0.1
+2013-11-22 17:04:54,609 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:04:56,234 [ERROR] [] [ConnectServer] Exception while connecting to host 127.0.0.1
+com.multimachine.exception.GenericLoggerException: 1001 - Invalid Credentials while connecting to gateway 
+	at com.multimachine.controller.SshController.connect(SshController.java:149)
+	at com.multimachine.views.ConnectServer.connectServer(ConnectServer.java:251)
+	at com.multimachine.views.ConnectServer.connectAllServersThreaded(ConnectServer.java:186)
+	at com.multimachine.views.ConnectServer$3.run(ConnectServer.java:156)
+Caused by: com.jcraft.jsch.JSchException: Auth fail
+	at com.jcraft.jsch.Session.connect(Session.java:512)
+	at com.jcraft.jsch.Session.connect(Session.java:183)
+	at com.multimachine.controller.SshController.connect(SshController.java:140)
+	... 3 more
+2013-11-22 17:04:56,265 [ INFO] [] [ConnectServer] Invalid credentials while connecting to Server 127.0.0.1
+2013-11-22 17:04:56,265 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:04:56,265 [ INFO] [] [ConnectServer] Enter  password for hutchuk@127.0.0.1
+2013-11-22 17:05:03,390 [ERROR] [] [ConnectServer] Exception while connecting to host 127.0.0.1
+com.multimachine.exception.GenericLoggerException: 1001 - Invalid Credentials while connecting to gateway 
+	at com.multimachine.controller.SshController.connect(SshController.java:149)
+	at com.multimachine.views.ConnectServer.connectServer(ConnectServer.java:251)
+	at com.multimachine.views.ConnectServer.connectAllServersThreaded(ConnectServer.java:186)
+	at com.multimachine.views.ConnectServer$3.run(ConnectServer.java:156)
+Caused by: com.jcraft.jsch.JSchException: Auth fail
+	at com.jcraft.jsch.Session.connect(Session.java:512)
+	at com.jcraft.jsch.Session.connect(Session.java:183)
+	at com.multimachine.controller.SshController.connect(SshController.java:140)
+	... 3 more
+2013-11-22 17:05:03,390 [ INFO] [] [ConnectServer] Invalid credentials while connecting to Server 127.0.0.1
+2013-11-22 17:05:03,390 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:05:03,390 [ INFO] [] [ConnectServer] Enter  password for hutchuk@127.0.0.1
+2013-11-22 17:05:06,390 [ INFO] [] [ConnectServer] Starting connectionsshuser@localhost
+2013-11-22 17:05:06,390 [ INFO] [] [ConnectServer] Attempting to connect localhost
+2013-11-22 17:05:06,390 [ INFO] [] [ConnectServer] Using username sshuser
+2013-11-22 17:05:06,906 [ INFO] [] [ConnectServer] completed threads
+2013-11-22 17:05:06,906 [ INFO] [] [ConnectServer] visible  false
+2013-11-22 17:05:06,906 [ INFO] [] [MultiMainDialogue] Starting again
+2013-11-22 17:05:06,906 [ INFO] [] [ConnectServer] Started threads
+2013-11-22 17:05:06,906 [ INFO] [] [MultiMainDialogue] connectServer closed
+2013-11-22 17:05:06,906 [ INFO] [] [ConnectServer] Starting connectionhutchuk@127.0.0.1
+2013-11-22 17:05:06,906 [ INFO] [] [ConnectServer] Attempting to connect 127.0.0.1
+2013-11-22 17:05:06,906 [ INFO] [] [ConnectServer] Enter  password for hutchuk@127.0.0.1
+2013-11-22 17:05:06,906 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:05:13,375 [ INFO] [] [CommandFilter] Command object fetched exit
+2013-11-22 17:05:13,546 [ INFO] [] [ConsoleWindow] This method is written to exit
+2013-11-22 17:07:48,812 [ INFO] [] [FileHelper] Attempting to read fileC:\muthu\multimachineexecute\gitversion\sshcommandbroadcaster\settings.xml//settings.xml
+2013-11-22 17:07:52,203 [ INFO] [] [ConnectServer] Opened
+2013-11-22 17:07:52,203 [ INFO] [] [ConnectServer] Started threads
+2013-11-22 17:07:52,203 [ INFO] [] [ConnectServer] Starting connectionhutchuk@127.0.0.1
+2013-11-22 17:07:52,218 [ INFO] [] [ConnectServer] Attempting to connect 127.0.0.1
+2013-11-22 17:07:52,218 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:07:52,593 [ERROR] [] [ConnectServer] Exception while connecting to host 127.0.0.1
+com.multimachine.exception.GenericLoggerException: 1001 - Invalid Credentials while connecting to gateway 
+	at com.multimachine.controller.SshController.connect(SshController.java:149)
+	at com.multimachine.views.ConnectServer.connectServer(ConnectServer.java:251)
+	at com.multimachine.views.ConnectServer.connectAllServersThreaded(ConnectServer.java:186)
+	at com.multimachine.views.ConnectServer$3.run(ConnectServer.java:156)
+Caused by: com.jcraft.jsch.JSchException: Auth fail
+	at com.jcraft.jsch.Session.connect(Session.java:512)
+	at com.jcraft.jsch.Session.connect(Session.java:183)
+	at com.multimachine.controller.SshController.connect(SshController.java:140)
+	... 3 more
+2013-11-22 17:07:52,593 [ INFO] [] [ConnectServer] Invalid credentials while connecting to Server 127.0.0.1
+2013-11-22 17:07:52,593 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:07:52,593 [ INFO] [] [ConnectServer] Enter  password for hutchuk@127.0.0.1
+2013-11-22 17:07:57,031 [ INFO] [] [MultiMainDialogue] Starting again
+2013-11-22 17:07:57,031 [ INFO] [] [ConnectServer] Started threads
+2013-11-22 17:07:57,031 [ INFO] [] [ConnectServer] Starting connectionhutchuk@127.0.0.1
+2013-11-22 17:07:57,031 [ INFO] [] [MultiMainDialogue] connectServer closed
+2013-11-22 17:07:57,031 [ INFO] [] [ConnectServer] Attempting to connect 127.0.0.1
+2013-11-22 17:07:57,031 [ INFO] [] [ConnectServer] Enter  password for hutchuk@127.0.0.1
+2013-11-22 17:07:57,031 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:09:19,359 [ INFO] [] [FileHelper] Attempting to read fileC:\muthu\multimachineexecute\gitversion\sshcommandbroadcaster\settings.xml//settings.xml
+2013-11-22 17:09:23,562 [ INFO] [] [ConnectServer] Opened
+2013-11-22 17:09:23,562 [ INFO] [] [ConnectServer] Started threads
+2013-11-22 17:09:23,562 [ INFO] [] [ConnectServer] Starting connectionhutchuk@127.0.0.1
+2013-11-22 17:09:23,562 [ INFO] [] [ConnectServer] Attempting to connect 127.0.0.1
+2013-11-22 17:09:23,562 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:09:23,812 [ERROR] [] [ConnectServer] Exception while connecting to host 127.0.0.1
+com.multimachine.exception.GenericLoggerException: 1001 - Invalid Credentials while connecting to gateway 
+	at com.multimachine.controller.SshController.connect(SshController.java:149)
+	at com.multimachine.views.ConnectServer.connectServer(ConnectServer.java:251)
+	at com.multimachine.views.ConnectServer.connectAllServersThreaded(ConnectServer.java:186)
+	at com.multimachine.views.ConnectServer$3.run(ConnectServer.java:156)
+Caused by: com.jcraft.jsch.JSchException: Auth fail
+	at com.jcraft.jsch.Session.connect(Session.java:512)
+	at com.jcraft.jsch.Session.connect(Session.java:183)
+	at com.multimachine.controller.SshController.connect(SshController.java:140)
+	... 3 more
+2013-11-22 17:09:23,812 [ INFO] [] [ConnectServer] Invalid credentials while connecting to Server 127.0.0.1
+2013-11-22 17:09:23,812 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:09:23,812 [ INFO] [] [ConnectServer] Enter  password for hutchuk@127.0.0.1
+2013-11-22 17:09:30,812 [ INFO] [] [ConnectServer] Starting connectionsshuser@localhost
+2013-11-22 17:09:30,812 [ INFO] [] [ConnectServer] Attempting to connect localhost
+2013-11-22 17:09:30,812 [ INFO] [] [ConnectServer] Using username sshuser
+2013-11-22 17:09:30,984 [ INFO] [] [ConnectServer] completed threads
+2013-11-22 17:09:30,984 [ INFO] [] [ConnectServer] visible  false
+2013-11-22 17:09:30,984 [ INFO] [] [MultiMainDialogue] Starting again
+2013-11-22 17:09:30,984 [ INFO] [] [MultiMainDialogue] connectServer closed
+2013-11-22 17:09:44,515 [ INFO] [] [ConnectServer] Opened
+2013-11-22 17:09:44,515 [ INFO] [] [ConnectServer] Started threads
+2013-11-22 17:09:44,515 [ INFO] [] [ConnectServer] Starting connectionhutchuk@127.0.0.1
+2013-11-22 17:09:44,515 [ INFO] [] [ConnectServer] Attempting to connect 127.0.0.1
+2013-11-22 17:09:44,515 [ INFO] [] [ConnectServer] Enter  password for hutchuk@127.0.0.1
+2013-11-22 17:09:44,515 [ INFO] [] [ConnectServer] Using username hutchuk
+2013-11-22 17:09:45,765 [ INFO] [] [MultiMainDialogue] Starting again
+2013-11-22 17:09:45,781 [ INFO] [] [MultiMainDialogue] connectServer closed

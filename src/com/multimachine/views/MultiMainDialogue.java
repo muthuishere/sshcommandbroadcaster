@@ -307,7 +307,7 @@ ConnectServer connectServer=new ConnectServer(lstConnectionInfo,sshMessageListen
 
 
  connectServer.setVisible(true);
-       connectServer.connectAllServers();
+       //connectServer.connectAllServers();
        log.info("Starting again");
                   errMsg = connectServer.getErrMsg();
          bashName =connectServer.getBashName();
@@ -317,7 +317,7 @@ ConnectServer connectServer=new ConnectServer(lstConnectionInfo,sshMessageListen
          connectServer.setVisible(false);
          log.info("connectServer closed");
         
-        if (cmbServerBox.getSelectedItems().length == errorCount) {
+        if (cmbServerBox.getSelectedItems().length == errorCount || null == lstSshController || lstSshController.size() ==0 ) {
 
             showError("Unable to connect to any Servers, Modify through server settings and try again", "Error");
             return;

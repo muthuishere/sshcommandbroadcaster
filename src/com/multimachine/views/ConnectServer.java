@@ -36,6 +36,7 @@ public class ConnectServer extends javax.swing.JDialog {
         String bashName = "";
          int errorCount = 0;
 
+         Thread pwdThread=null;
     public String getErrMsg() {
         return errMsg;
     }
@@ -92,7 +93,7 @@ connectAllServers();
     public void showInput() {
         txtPassword.setText("");
         pnlInput.setVisible(true);
-        txtPassword.setFocusable(true);
+        txtPassword.setRequestFocusEnabled(true);
 
     }
 
@@ -122,7 +123,7 @@ connectAllServers();
 
         flgInputgiven = false;
         flgbreakInput = false;
-        new Thread() {
+     new Thread() {
             public void run() {
 
                 showInput();
@@ -130,6 +131,7 @@ connectAllServers();
             }
         }.start();
 
+     
         while (flgInputgiven == false && flgbreakInput == false) {
             try {
                 Thread.sleep(1000);
@@ -348,10 +350,9 @@ errorCount=0;
             }
         });
 
-        txtPassword.setFont(new java.awt.Font("Wingdings", 1, 12)); // NOI18N
+        txtPassword.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         txtPassword.setToolTipText("");
         txtPassword.setDragEnabled(true);
-        txtPassword.setEchoChar('\u00a4');
 
         javax.swing.GroupLayout pnlInputLayout = new javax.swing.GroupLayout(pnlInput);
         pnlInput.setLayout(pnlInputLayout);
@@ -405,14 +406,14 @@ errorCount=0;
     }//GEN-LAST:event_formWindowOpened
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        // TODO add your handling code here:
+    
         flgInputgiven = true;
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+    
 
-        flgbreakInput = false;
+        flgbreakInput = true;
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**

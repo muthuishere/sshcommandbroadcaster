@@ -151,11 +151,10 @@
         <Component class="javax.swing.JPasswordField" name="txtPassword">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Wingdings" size="12" style="1"/>
+              <Font name="Arial" size="12" style="1"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="dragEnabled" type="boolean" value="true"/>
-            <Property name="echoChar" type="char" value="&#xa4;"/>
           </Properties>
         </Component>
       </SubComponents>
