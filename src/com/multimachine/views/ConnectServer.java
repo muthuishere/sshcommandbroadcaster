@@ -83,7 +83,8 @@ public class ConnectServer extends javax.swing.JDialog {
         this.lstConnections=lstConnections;
         this.sshMessageListener=sshMessageListener;
         initComponents();
-        pnlInput.setVisible(false);
+         txtPassword.setRequestFocusEnabled(true);
+        hideInput();
         lstSshController = new ArrayList<SshController>();
 log.info("Opened");
 connectAllServers();
@@ -92,13 +93,19 @@ connectAllServers();
 
     public void showInput() {
         txtPassword.setText("");
-        pnlInput.setVisible(true);
-        txtPassword.setRequestFocusEnabled(true);
-
+        txtPassword.setVisible(true);
+        btnOk.setVisible(true);
+        btnCancel.setVisible(true);
+        
+       
+txtPassword.requestFocus();
     }
 
     public void hideInput() {
-        pnlInput.setVisible(false);
+      txtPassword.setVisible(false);
+        btnOk.setVisible(false);
+        btnCancel.setVisible(false);
+        
 
     }
 
@@ -291,13 +298,11 @@ errorCount=0;
     private void initComponents() {
 
         jInternalFrame1 = new javax.swing.JInternalFrame();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtConnectLog = new javax.swing.JTextArea();
-        pnlInput = new javax.swing.JPanel();
+        txtPassword = new javax.swing.JPasswordField();
         btnOk = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        txtPassword = new javax.swing.JPasswordField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtConnectLog = new javax.swing.JTextArea();
 
         jInternalFrame1.setVisible(true);
 
@@ -319,22 +324,9 @@ errorCount=0;
             }
         });
 
-        txtConnectLog.setEditable(false);
-        txtConnectLog.setColumns(20);
-        txtConnectLog.setLineWrap(true);
-        txtConnectLog.setRows(5);
-        jScrollPane1.setViewportView(txtConnectLog);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-        );
+        txtPassword.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        txtPassword.setToolTipText("");
+        txtPassword.setDragEnabled(true);
 
         btnOk.setText("Ok");
         btnOk.addActionListener(new java.awt.event.ActionListener() {
@@ -350,51 +342,37 @@ errorCount=0;
             }
         });
 
-        txtPassword.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        txtPassword.setToolTipText("");
-        txtPassword.setDragEnabled(true);
-
-        javax.swing.GroupLayout pnlInputLayout = new javax.swing.GroupLayout(pnlInput);
-        pnlInput.setLayout(pnlInputLayout);
-        pnlInputLayout.setHorizontalGroup(
-            pnlInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlInputLayout.createSequentialGroup()
-                .addContainerGap(215, Short.MAX_VALUE)
-                .addComponent(btnOk)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCancel)
-                .addGap(12, 12, 12))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInputLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtPassword)
-                .addContainerGap())
-        );
-        pnlInputLayout.setVerticalGroup(
-            pnlInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlInputLayout.createSequentialGroup()
-                .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnOk)
-                    .addComponent(btnCancel)))
-        );
+        txtConnectLog.setEditable(false);
+        txtConnectLog.setColumns(20);
+        txtConnectLog.setLineWrap(true);
+        txtConnectLog.setRows(5);
+        jScrollPane1.setViewportView(txtConnectLog);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancel))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pnlInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOk)
+                    .addComponent(btnCancel)))
         );
 
         pack();
@@ -462,9 +440,7 @@ errorCount=0;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOk;
     private javax.swing.JInternalFrame jInternalFrame1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel pnlInput;
     private javax.swing.JTextArea txtConnectLog;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
