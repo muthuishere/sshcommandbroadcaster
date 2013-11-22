@@ -72,6 +72,7 @@ public class ConsoleWindow extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon(iconURL);
         this.setIconImage(icon.getImage());
         this.setAlwaysOnTop(true);
+        
         this.consoleCallBack = consoleCallBack;
         // 
         // this.prompt = shellName + ">";

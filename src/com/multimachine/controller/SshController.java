@@ -26,6 +26,7 @@ import com.multimachine.listeners.SshMessageListener;
 import com.multimachine.beans.ServerInfo;
 
 import com.multimachine.exception.GenericLoggerException;
+import com.multimachine.utils.SshCommandCode;
 import com.multimachine.utils.StringHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class SshController {
         } catch (JSchException ex) {
 
             if (ex.toString().contains("Auth fail")) {
-                throw new GenericLoggerException("Invalid Credentials while connecting to gateway ", ex);
+                throw new GenericLoggerException(SshCommandCode.CREDENTIAL_GATEWAY_ERROR,"Invalid Credentials while connecting to gateway ", ex);
             } else {
                 throw new GenericLoggerException("Exception While connecting to gateway " + ex.toString(), ex);
             }
@@ -143,11 +144,11 @@ public class SshController {
         } catch (JSchException ex) {
 
             if (ex.toString().contains("Auth fail")) {
-                sendConnectionMessage("Invalid Credentials while connecting to Server for " + connectionInfo.getProfileName());
+               // sendConnectionMessage("Invalid Credentials while connecting to Server for " + connectionInfo.getProfileName());
 
-                throw new GenericLoggerException("Invalid Credentials while connecting to gateway ", ex);
+                throw new GenericLoggerException(SshCommandCode.CREDENTIAL_SERVER_ERROR,"Invalid Credentials while connecting to gateway ", ex);
             } else {
-                sendConnectionMessage("Error While connecting to Server " + connectionInfo.getProfileName());
+              //  sendConnectionMessage("Error While connecting to Server " + connectionInfo.getProfileName());
 
                 throw new GenericLoggerException("Exception While connecting to Server " + ex.toString(), ex);
             }

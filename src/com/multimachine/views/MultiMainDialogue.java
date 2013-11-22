@@ -35,13 +35,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
  *
  *
  */
-public class MultiMainDialogue extends javax.swing.JDialog implements SshMessageListener, MultiMessageBroadcaster {
+public final class MultiMainDialogue extends javax.swing.JDialog implements SshMessageListener, MultiMessageBroadcaster {
 
     //private  ConsoleController consoleController = null;
     private ConsoleController consoleController = null;
@@ -254,7 +255,7 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
         new Thread() {
             public void run() {
 
-                txtConectConsole.append(msg + StringHelper.NEW_LINE);
+              //  txtConnectConsole.append(msg + StringHelper.NEW_LINE);
 
             }
         }.start();
@@ -264,6 +265,7 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
     public void getColor(int index) {
     }
 
+    
     public void connectAllServers() {
 
         if (cmbServerBox.getSelectedItems().length <= 0) {
@@ -272,36 +274,49 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
             return;
         }
 
-        String errMsg = "";
-        String bashName = "[";
+      
+//        ArrayList<ProfileStyle> lstProfileStyles = new ArrayList<ProfileStyle>();
+        
+      final  ArrayList<ConnectionInfo>  lstConnectionInfo = new ArrayList<ConnectionInfo>();
 
-        int errorCount = 0;
-        lstSshController = new ArrayList<SshController>();
-        ArrayList<ProfileStyle> lstProfileStyles = new ArrayList<ProfileStyle>();
-
+      
+      final MultiMessageBroadcaster broadcaster=this;
+      final SshMessageListener sshMessageListener=this;
+      
         for (Object profileObj : cmbServerBox.getSelectedItems()) {
 
             String profileName = (String) profileObj;
-            try {
+            
+                lstConnectionInfo.add(getConnectionInfo(profileName));
+                
 
-                SshController sshController = new SshController(getConnectionInfo(profileName), this);
-                sshController.connect();
-                lstSshController.add(sshController);
-                lstProfileStyles.add(new ProfileStyle(sshController.getConnectionInfo().getServerInfo().getHost(), lstcolors.get(lstSshController.size() - 1)));
-                bashName = bashName + " " + sshController.getConnectionInfo().getServerInfo().getHost() + " ";
-
-            } catch (GenericLoggerException ex) {
-                appendTxt("Error while connecting to " + profileName);
-                if (errMsg.equals("")) {
-                    errMsg = "Errors in connecting to Servers ";
-                }
-
-                errMsg = errMsg + "[" + profileName + "]";
-                errorCount++;
-            }
 
         }
+        
+          new Thread() {
+            public void run() {
 
+              //  txtConnectConsole.append(msg + StringHelper.NEW_LINE);
+                
+                  String errMsg = "";
+        String bashName = "";
+
+        int errorCount = 0;
+        lstSshController = new ArrayList<SshController>();
+ConnectServer connectServer=new ConnectServer(lstConnectionInfo,sshMessageListener,new javax.swing.JFrame(), true);
+
+
+ connectServer.setVisible(true);
+       connectServer.connectAllServers();
+       log.info("Starting again");
+                  errMsg = connectServer.getErrMsg();
+         bashName =connectServer.getBashName();
+
+         errorCount = connectServer.getErrorCount();
+         lstSshController=connectServer.getLstSshController();
+         connectServer.setVisible(false);
+         log.info("connectServer closed");
+        
         if (cmbServerBox.getSelectedItems().length == errorCount) {
 
             showError("Unable to connect to any Servers, Modify through server settings and try again", "Error");
@@ -318,13 +333,24 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
 
         }
 
-        bashName = bashName + "] $";
+        
+        ArrayList<ProfileStyle> lstProfileStyles = new ArrayList<ProfileStyle>();
+        int k=0;
+        for(SshController sshController: lstSshController)
+		 lstProfileStyles.add(new ProfileStyle(sshController.getConnectionInfo().getServerInfo().getHost(), lstcolors.get(k++)));
+                         
+
 
         // Create a console Shell
         setModal(false);
         setVisible(false);
 
-        consoleController = new ConsoleController(this, lstProfileStyles);
+        consoleController = new ConsoleController(broadcaster, lstProfileStyles);
+
+            }
+        }.start();
+
+          
     }
     @Override
     public void showParent() {
@@ -336,7 +362,7 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
         new Thread() {
             public void run() {
 
-                txtConectConsole.append(msg + StringHelper.NEW_LINE);
+             //   txtConectConsole.append(msg + StringHelper.NEW_LINE);
 
             }
         }.start();
@@ -353,26 +379,16 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtConectConsole = new javax.swing.JTextArea();
-        jLabel2 = new javax.swing.JLabel();
         pnlServer = new javax.swing.JPanel();
         btnConnect = new javax.swing.JButton();
         btnSettings = new javax.swing.JButton();
         btnSettings1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(java.awt.Color.white);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("Servers");
-
-        txtConectConsole.setEditable(false);
-        txtConectConsole.setColumns(20);
-        txtConectConsole.setRows(5);
-        jScrollPane1.setViewportView(txtConectConsole);
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setText("Console");
 
         btnConnect.setText("Connect");
         btnConnect.addActionListener(new java.awt.event.ActionListener() {
@@ -418,7 +434,7 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
         pnlServerLayout.setHorizontalGroup(
             pnlServerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlServerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(245, Short.MAX_VALUE)
                 .addComponent(btnConnect)
                 .addGap(18, 18, 18)
                 .addComponent(btnSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -442,14 +458,9 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlServer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -457,14 +468,9 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2))
+                    .addComponent(jLabel1)
                     .addComponent(pnlServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -555,10 +561,7 @@ public class MultiMainDialogue extends javax.swing.JDialog implements SshMessage
     private javax.swing.JButton btnSettings;
     private javax.swing.JButton btnSettings1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlServer;
-    private javax.swing.JTextArea txtConectConsole;
     // End of variables declaration//GEN-END:variables
  private CheckComboBox cmbServerBox;
 
