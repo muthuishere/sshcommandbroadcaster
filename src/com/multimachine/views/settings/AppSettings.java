@@ -36,12 +36,27 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import org.apache.log4j.Logger;
 
 
 public class AppSettings extends javax.swing.JDialog {
 
     private static final Logger log = Logger.getLogger(AppSettings.class);
+    
+    private DefaultMutableTreeNode treeModel;
+
+    public DefaultMutableTreeNode getTreeModel() {
+        return treeModel;
+    }
+
+    public void setTreeModel(DefaultMutableTreeNode treeModel) {
+        this.treeModel = treeModel;
+    }
+
+  
+     
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -82,6 +97,7 @@ progressbar.setVisible(false);
         if (null != settings && null != settings.getConnectionInfo()) {
 
             for (ConnectionInfo connectionInfo : settings.getConnectionInfo()) {
+                
                 listServers.addElement(connectionInfo.getProfileName());
 
             }
