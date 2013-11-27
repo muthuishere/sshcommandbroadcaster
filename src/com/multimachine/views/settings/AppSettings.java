@@ -15,10 +15,12 @@
  */
 package com.multimachine.views.settings;
 
+import com.multimachine.utils.TreeViewHelper;
 import com.multimachine.beans.ConnectionInfo;
 import com.multimachine.beans.Settings;
 import com.multimachine.controller.SettingsController;
 import com.multimachine.utils.ImportHelper;
+import com.multimachine.utils.StringHelper;
 import com.multimachine.views.components.ImportFileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -37,26 +39,21 @@ import javax.swing.KeyStroke;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Logger;
 
-
-public class AppSettings extends javax.swing.JDialog {
+public class AppSettings extends javax.swing.JDialog implements TreeSelectionListener {
 
     private static final Logger log = Logger.getLogger(AppSettings.class);
-    
-    private DefaultMutableTreeNode treeModel;
 
-    public DefaultMutableTreeNode getTreeModel() {
-        return treeModel;
-    }
+    boolean flgEditEnabled = false;
 
-    public void setTreeModel(DefaultMutableTreeNode treeModel) {
-        this.treeModel = treeModel;
-    }
+    private DefaultTreeModel treeModel;
 
-  
-     
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -75,7 +72,7 @@ public class AppSettings extends javax.swing.JDialog {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
-
+ TreeViewHelper treeViewHelper =null;
     private Settings settings = null;
     private SettingsController settingsController = null;
 
@@ -85,7 +82,10 @@ public class AppSettings extends javax.swing.JDialog {
     public AppSettings(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-progressbar.setVisible(false);
+
+        TreeViewHelper treeViewHelper = new TreeViewHelper();
+
+        progressbar.setVisible(false);
         URL iconURL = getClass().getResource("/com/multimachine/resources/red/16x16/app.png");
         // iconURL is null when not found
         ImageIcon icon = new ImageIcon(iconURL);
@@ -97,15 +97,27 @@ progressbar.setVisible(false);
         if (null != settings && null != settings.getConnectionInfo()) {
 
             for (ConnectionInfo connectionInfo : settings.getConnectionInfo()) {
-                
-                listServers.addElement(connectionInfo.getProfileName());
+
+                treeViewHelper.addNode(connectionInfo.getProfileName());
 
             }
-
+//
+//             treeViewHelper.addNode( "Node 1/Node 2/Node 3/Node 4");
+//         treeViewHelper.addNode( "Node 2/Node 3/Node 5");
+//        treeViewHelper.addNode( "Node 1/Node 2/Node 3/Node 6");
+//         treeViewHelper.addNode("Node 1/Node 2/Node 4/Node 5");
+//         treeViewHelper.addNode( "Node 1/Node 1/Node 3/Node 5");
+//         
         }
+        treeModel = treeViewHelper.getModel();
+        lstServerProfiles.setModel(treeModel);
 
-        lstServerProfiles.addTreeSelectionListener(listSelectionListener);
+        lstServerProfiles.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
+        //Listen for when the selection changes.
+        lstServerProfiles.addTreeSelectionListener(this);
+
+        //lstServerProfiles.addTreeSelectionListener(listSelectionListener);
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -118,16 +130,75 @@ progressbar.setVisible(false);
         });
     }
 
-       public void showError(String msg, String title) {
+    public void showError(String msg, String title) {
 
         JOptionPane.showMessageDialog(this, msg, title, JOptionPane.ERROR_MESSAGE);
 
     }
-        public void showMsg(String msg, String title) {
+
+    public void showMsg(String msg, String title) {
 
         JOptionPane.showMessageDialog(this, msg, title, JOptionPane.INFORMATION_MESSAGE);
 
     }
+
+    private String getSelectedPath() {
+
+        DefaultMutableTreeNode selected = (DefaultMutableTreeNode) lstServerProfiles.getSelectionPath().getLastPathComponent();
+
+        String xpath = "";
+        while (selected.getParent() != null) {
+            int index = 1;
+            String tag = selected.toString();
+            DefaultMutableTreeNode selected2 = selected;
+            while ((selected2 = selected2.getPreviousSibling()) != null) {
+                if (tag.equals(selected2.toString())) {
+                    index++;
+                }
+            }
+
+            //xpath = "/" + tag + "[" + index + "]" + xpath;
+            xpath = "/" + tag + xpath;
+
+            if (selected.getParent() == null) {
+                selected = null;
+            } else {
+                selected = (DefaultMutableTreeNode) selected.getParent();
+            }
+        }
+        if (null != xpath) {
+            //remove the first / , as we need to neglect
+            xpath = xpath.substring(1);
+        }
+        return xpath;
+    }
+
+    public void valueChanged(TreeSelectionEvent e) {
+//Returns the last path element of the selection.
+//This method is useful only when the selection model allows a single selection.
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) lstServerProfiles.getLastSelectedPathComponent();
+
+        if (node == null) //Nothing is selected.     
+        {
+            return;
+        }
+
+        Object nodeInfo = node.getUserObject();
+        if (node.isLeaf()) {
+
+            System.out.println("is leaf:" + getSelectedPath());
+
+            flgEditEnabled = true;
+
+        } else {
+            System.out.println("is folder:" + getSelectedPath());
+
+        }
+
+        btnEdit.setEnabled(flgEditEnabled);
+        btnDelete.setEnabled(flgEditEnabled);
+    }
+
     public ConnectionInfo getConnectInfoForProfile(int index) {
 
         if (null != settings && null != settings.getConnectionInfo()) {
@@ -346,41 +417,55 @@ progressbar.setVisible(false);
         }.start();
     }//GEN-LAST:event_btnAddActionPerformed
 
+    
+    public void removeSelected(){
+    
+     TreePath[] paths = lstServerProfiles.getSelectionPaths();
+                for (TreePath path : paths) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    if (node.getParent() != null) {
+                        treeModel.removeNodeFromParent(node);
+                    }
+                }
+                
+    }
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        new Thread() {
+            public void run() {
 
-//        new Thread() {
-//            public void run() {
-//
-//                ConnectionInfo connectionInfo = getConnectInfoForProfile(lstServerProfiles.getSelectionPath().);
-//
-//                ServerDetails dialog = new ServerDetails("Edit Server" + StringHelper.defaultString(lstServerProfiles.getSelectedValue().toString()), connectionInfo, new javax.swing.JFrame(), true);
-//
-//                dialog.setVisible(true);
-//
-//                if (dialog.getReturnStatus() == ServerDetails.RET_OK) {
-//
-//                    log.info("Returned Ok");
-//                    connectionInfo = dialog.getConnectionInfo();
-//                    listServers.set(lstServerProfiles.getSelectedIndex(), dialog.getConnectionInfo().getProfileName());
-//                    //  listServers.addElement(dialog.getConnectionInfo().getProfileName());
-//                } else {
-//
-//                    log.info("Returned Cancel");
-//                }
-//
-//            }
-//        }.start();
+                ConnectionInfo connectionInfo = getConnectInfoForProfile( getSelectedPath() );
+
+                ServerDetails dialog = new ServerDetails("Edit Server" + StringHelper.defaultString(getSelectedPath() ), connectionInfo, new javax.swing.JFrame(), true);
+
+                dialog.setVisible(true);
+
+                if (dialog.getReturnStatus() == ServerDetails.RET_OK) {
+
+                    log.info("Returned Ok");
+                    connectionInfo = dialog.getConnectionInfo();
+                    removeSelected();
+                    treeViewHelper.addNode(dialog.getConnectionInfo().getProfileName());
+                   
+                    //  listServers.addElement(dialog.getConnectionInfo().getProfileName());
+                } else {
+
+                    log.info("Returned Cancel");
+                }
+
+            }
+        }.start();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-
 //        new Thread() {
 //            public void run() {
 //
 //                if (confirmMsg("Do you want to remove Server profile " + lstServerProfiles.getSelectedValue().toString() + "?", "Confirm Delete")) {
 //
+//                    
 //                    removeConnectionInfo(lstServerProfiles.getSelectedIndex());
-//                    listServers.remove(lstServerProfiles.getSelectedIndex());
+//                     removeSelected();
+//                    //listServers.remove(lstServerProfiles.getSelectedIndex());
 //                    //  listServers.addElement(dialog.getConnectionInfo().getProfileName());
 //                } else {
 //
@@ -393,46 +478,42 @@ progressbar.setVisible(false);
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
         // TODO add your handling code here:
-        
-       
-               JFileChooser fileChooser = new JFileChooser();
-               fileChooser.setFileFilter(new ImportFileFilter());
-if (fileChooser.showOpenDialog(AppSettings.this) == JFileChooser.APPROVE_OPTION) {
- log.info(fileChooser.getSelectedFile().getAbsolutePath());
- String filename=fileChooser.getSelectedFile().getAbsolutePath();
- 
-  ArrayList<ConnectionInfo> lsttmpConnections;
-        try {
-            progressbar.setVisible(true);
-            progressbar.setValue(25);
-            lsttmpConnections = ImportHelper.importWinscp(filename);
-            progressbar.setValue(75);
-            if(null == lsttmpConnections || lsttmpConnections.size() ==0)
-                throw new Exception("No server details Identified in file");
-            for(ConnectionInfo connectInfo:lsttmpConnections){
-            
-            progressbar.setValue(progressbar.getValue()+1);
-                  settings.getConnectionInfo().add(connectInfo);
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new ImportFileFilter());
+        if (fileChooser.showOpenDialog(AppSettings.this) == JFileChooser.APPROVE_OPTION) {
+            log.info(fileChooser.getSelectedFile().getAbsolutePath());
+            String filename = fileChooser.getSelectedFile().getAbsolutePath();
+
+            ArrayList<ConnectionInfo> lsttmpConnections;
+            try {
+                progressbar.setVisible(true);
+                progressbar.setValue(25);
+                lsttmpConnections = ImportHelper.importWinscp(filename);
+                progressbar.setValue(75);
+                if (null == lsttmpConnections || lsttmpConnections.size() == 0) {
+                    throw new Exception("No server details Identified in file");
+                }
+                for (ConnectionInfo connectInfo : lsttmpConnections) {
+
+                    progressbar.setValue(progressbar.getValue() + 1);
+                    settings.getConnectionInfo().add(connectInfo);
                     listServers.addElement(connectInfo.getProfileName());
+                }
+
+                progressbar.setValue(100);
+
+            } catch (Exception ex) {
+                log.error(ex);
+                showError("Unable to Import settings !!" + ex.getMessage(), "Error");
+
+            } finally {
+                progressbar.setVisible(false);
+
             }
-            
-             progressbar.setValue(100);
-           
-        } catch (Exception ex) {
-          log.error(ex);
-            showError("Unable to Import settings !!" +ex.getMessage(), "Error");
-       
-       
-        }finally{
-        progressbar.setVisible(false);
-        
+            // load from file
         }
-  // load from file
-}
 
-
-       
-        
     }//GEN-LAST:event_btnImportActionPerformed
 
     private void doClose(int retStatus) {

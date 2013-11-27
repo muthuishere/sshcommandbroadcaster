@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/views/settings/SettingsMain.java</file>
-            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/views/settings/CredentialChange.java</file>
-            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/views/settings/ServerDetails.java</file>
-            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/utils/ImportHelper.java</file>
+            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/views/settings/AppSettings.java</file>
+            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/views/settings/PathTest.java</file>
+            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/utils/TreeViewHelper.java</file>
+            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/utils/StringHelper.java</file>
         </group>
     </open-files>
 </project-private>
