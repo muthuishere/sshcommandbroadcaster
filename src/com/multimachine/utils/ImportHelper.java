@@ -42,9 +42,12 @@ public class ImportHelper {
             for (int i = 0; i < lines.length; i++) {
 
                 String line = lines[i];
-
+                String profileName="";
                 if (line.startsWith(SESSION_ID)) {
 
+                    
+                    profileName=line.replace(SESSION_ID, "");
+                    profileName=profileName.replace("]", "");
                     int k = i + 1;
 
                     ServerInfo serverInfo = new ServerInfo();
@@ -81,7 +84,11 @@ public class ImportHelper {
                             connectionInfo.setGatewayInfo(gatewayInfo);
                         }
 
-                        connectionInfo.setProfileName(serverInfo.getUser() + "@" + serverInfo.getHost() + "~" + (lstConnectionInfo.size() + 1));
+                        if(StringHelper.isEmpty(profileName))
+                        profileName=serverInfo.getUser() + "@" + serverInfo.getHost() + "~" + (lstConnectionInfo.size() + 1);
+                        
+                        
+                        connectionInfo.setProfileName(profileName);
 
                     }
                     lstConnectionInfo.add(connectionInfo);

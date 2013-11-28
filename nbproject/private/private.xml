@@ -3,9 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/views/MultiMainDialogue.java</file>
-            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/views/console/CommandFilter.java</file>
-            <file>file:/C:/muthu/multimachineexecute/sshcommandbroadcaster/src/com/multimachine/views/console/ColoredCommandFilter.java</file>
+            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/views/ConnectServer.java</file>
+            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/beans/ConnectionInfo.java</file>
+            <file>file:/C:/muthu/multimachineexecute/gitversion/sshcommandbroadcaster/src/com/multimachine/views/MultiMainDialogue.java</file>
         </group>
     </open-files>
 </project-private>

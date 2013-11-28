@@ -52,10 +52,10 @@ public class GenericLoggerException extends Exception {
         statusCode = code;
         statusDescription = description;
     }
-
-    public GenericLoggerException(String message, Throwable cause) {
+   public GenericLoggerException(String message, Throwable cause) {
         super(message, cause);
     }
+   
 
     public GenericLoggerException(Throwable cause) {
         super(cause);

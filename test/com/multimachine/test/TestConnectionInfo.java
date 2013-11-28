@@ -27,7 +27,7 @@ import org.junit.Test;
  *
  *
  */
-public class TestSettings {
+public class TestConnectionInfo {
 
     private final SettingsController settingsController = new SettingsController();
 
@@ -41,28 +41,22 @@ public class TestSettings {
         //helper.tearDown();
     }
 
-  
+     @Test
+    public void testConnectionProfileName() {
+        
+        ConnectionInfo connectionInfo=TestData.getTestConnectionInfo();
+        connectionInfo.setProfileName("test/testconnectionProfile");
+         assertEquals("only Profile with Folder","testconnectionProfile", connectionInfo.getOnlyProfileName());
+         assertEquals("Get Folder","test/", connectionInfo.getFolderName());
+         
+         
+         connectionInfo.setProfileName("emptyconnectionProfile");
+         assertEquals("Profilename without folder","emptyconnectionProfile", connectionInfo.getOnlyProfileName());
+         assertEquals("Profilename with empty folder","", connectionInfo.getFolderName());
+         
+    }
      
-    @Test
-    public void testWrite() {
-        Settings settings = new Settings();
-        settings.add(TestData.getTestConnectionInfo());
-        settings.add(TestData.getTestConnectionInfo());
-        settings.add(TestData.getTestConnectionInfo());
-        settings.add(TestData.getTestConnectionInfo());
-        settings.add(TestData.getTestConnectionInfo());
-        boolean flgSuccess = settingsController.saveSettingsasXml(settings);
-        assertTrue("Settings saved Successfully", flgSuccess);
-    }
-
-    @Test
-    public void testRead() {
-
-        Settings settings = settingsController.retrieveSettingsFromFile();
-        assertNotNull("Host is not Null", settings.getConnectionInfo().get(0).getServerInfo().getHost());
-
-    }
-
+    
     public static void main(String[] args) {
         //testWrite();
         //testRead();

@@ -54,10 +54,51 @@ public class ConnectionInfo {
         return StringHelper.defaultString(profileName);
     }
 
+    
+     public String getFolderName() {
+         if(!StringHelper.isEmpty(profileName)  && profileName.contains("/") ){
+         
+           
+           
+         
+                 String folderName =profileName.substring(0, profileName.lastIndexOf(getOnlyProfileName()));
+                 
+                 return folderName;
+         }
+         
+        return "";
+    }
+     
+      public String getOnlyProfileName() {
+        if(!StringHelper.isEmpty(profileName) ){
+         
+             int len=profileName.split("/").length;
+             String name=profileName;
+             if(len > 0)                 
+                     name = profileName.split("/")[len-1];
+             
+             return name;
+         }
+        return "";
+    }
+      
     public void setProfileName(String profileName) {
         this.profileName = profileName;
 
     }
+    
+    @Override
+    
+    public boolean equals(Object compareObj){
+    if (compareObj == null) return false;
+    if (compareObj == this) return true;
+    if (!(compareObj instanceof ConnectionInfo))return false;
+    
+    ConnectionInfo otherConnectionInfo = (ConnectionInfo)compareObj;
+    
+    return this.profileName.equals(otherConnectionInfo.getProfileName());
+    
+}
 
     @Override
     public String toString() {
