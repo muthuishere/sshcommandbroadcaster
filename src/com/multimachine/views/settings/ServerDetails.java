@@ -54,10 +54,14 @@ public class ServerDetails extends javax.swing.JDialog {
         this.connectionInfo = connectionInfo;
     }
 
+      public ServerDetails(String title, ConnectionInfo connectionInfo, java.awt.Frame parent, boolean modal) {
+          
+          this(title,"",connectionInfo,parent,modal);
+      }
     /**
      * Creates new form ServerDetails
      */
-    public ServerDetails(String title, ConnectionInfo connectionInfo, java.awt.Frame parent, boolean modal) {
+    public ServerDetails(String title, String profileFolder,ConnectionInfo connectionInfo, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setTitle(title);
         initComponents();
@@ -72,10 +76,16 @@ public class ServerDetails extends javax.swing.JDialog {
         this.jTabbedPane1.setEnabledAt(1, false);
         tabTunnel.setEnabled(false);
 
+        
+        if(!StringHelper.isEmpty(profileFolder)){
+           txtFolder.setText(profileFolder);
+        }
         if (null != connectionInfo) {
 
-            txtProfileName.setText(connectionInfo.getProfileName());
-
+            
+            
+            txtOnlyProfileName.setText(connectionInfo.getOnlyProfileName());
+            txtFolder.setText(connectionInfo.getFolderName());
             if (null != connectionInfo.getServerInfo()) {
 
                 txtServerHostName.setText(connectionInfo.getServerInfo().getHost());
@@ -132,11 +142,11 @@ public class ServerDetails extends javax.swing.JDialog {
         new Thread() {
             public void run() {
 
-                if (StringHelper.isEmpty(txtProfileName.getText())) {
+                if (StringHelper.isEmpty(txtOnlyProfileName.getText())) {
 
                     if (!StringHelper.isEmpty(txtServerHostName.getText()) && !StringHelper.isEmpty(txtServerUserName.getText())) {
 
-                        txtProfileName.setText(txtServerUserName.getText() + "@" + txtServerHostName.getText());
+                        txtOnlyProfileName.setText(txtServerUserName.getText() + "@" + txtServerHostName.getText());
                     }
 
                 }
@@ -190,8 +200,10 @@ public class ServerDetails extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         cmbTunnelPort = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        txtProfileName = new javax.swing.JTextField();
+        txtOnlyProfileName = new javax.swing.JTextField();
         lblError = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        txtFolder = new javax.swing.JTextField();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -327,7 +339,7 @@ public class ServerDetails extends javax.swing.JDialog {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtServerPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("App Server", tabHost);
@@ -413,16 +425,16 @@ public class ServerDetails extends javax.swing.JDialog {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTunnelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Tunnel", tabTunnel);
 
         jLabel9.setText("ProfileName");
 
-        txtProfileName.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtOnlyProfileName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtProfileNameKeyPressed(evt);
+                txtOnlyProfileNameKeyPressed(evt);
             }
         });
 
@@ -430,30 +442,43 @@ public class ServerDetails extends javax.swing.JDialog {
         lblError.setForeground(new java.awt.Color(255, 0, 0));
         lblError.setText("jLabel10");
 
+        jLabel10.setText("Folder");
+
+        txtFolder.setToolTipText("Use / character for each folder");
+        txtFolder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtFolderKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel9)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtProfileName, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtOnlyProfileName, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(83, 83, 83)
                         .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelButton)))
+                        .addComponent(cancelButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -462,13 +487,17 @@ public class ServerDetails extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(3, 3, 3)
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtProfileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtOnlyProfileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(okButton)
@@ -509,10 +538,21 @@ public class ServerDetails extends javax.swing.JDialog {
                     serverInfo.setUser(txtServerUserName.getText());
                 }
 
-                if (StringHelper.isEmpty(txtProfileName.getText())) {
+                if (StringHelper.isEmpty(txtOnlyProfileName.getText())) {
                     errText = "ProfileName cannot be Empty !";
                 } else {
-                    connectionInfo.setProfileName(txtProfileName.getText());
+                    
+                    String foldername=txtFolder.getText();
+                    if(!StringHelper.isEmpty(foldername)){
+                        
+                        if(foldername.startsWith("/"))
+                            foldername=foldername.substring(1);
+
+                        if(!foldername.endsWith("/"))
+                            foldername=foldername+ "/";
+                    
+                    }
+                    connectionInfo.setProfileName(foldername+ txtOnlyProfileName.getText());
                 }
 
                 serverInfo.setPort(Integer.parseInt(cmbServerPort.getText()));
@@ -617,10 +657,10 @@ public class ServerDetails extends javax.swing.JDialog {
         resetError();
     }//GEN-LAST:event_txtServerPasswordKeyPressed
 
-    private void txtProfileNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProfileNameKeyPressed
+    private void txtOnlyProfileNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOnlyProfileNameKeyPressed
         // TODO add your handling code here:
         resetError();
-    }//GEN-LAST:event_txtProfileNameKeyPressed
+    }//GEN-LAST:event_txtOnlyProfileNameKeyPressed
 
     private void txtTunnelHostNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTunnelHostNameKeyPressed
         // TODO add your handling code here:
@@ -647,6 +687,10 @@ public class ServerDetails extends javax.swing.JDialog {
         // TODO add your handling code here:
         updateProfileName();
     }//GEN-LAST:event_txtServerUserNameFocusLost
+
+    private void txtFolderKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFolderKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFolderKeyPressed
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -702,6 +746,7 @@ public class ServerDetails extends javax.swing.JDialog {
     private javax.swing.JTextField cmbServerPort;
     private javax.swing.JTextField cmbTunnelPort;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -715,7 +760,8 @@ public class ServerDetails extends javax.swing.JDialog {
     private javax.swing.JButton okButton;
     private javax.swing.JPanel tabHost;
     private javax.swing.JPanel tabTunnel;
-    private javax.swing.JTextField txtProfileName;
+    private javax.swing.JTextField txtFolder;
+    private javax.swing.JTextField txtOnlyProfileName;
     private javax.swing.JTextField txtServerHostName;
     private javax.swing.JPasswordField txtServerPassword;
     private javax.swing.JTextField txtServerUserName;

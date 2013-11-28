@@ -9,7 +9,7 @@
     <tunnelInfo>
       <port>22</port>
     </tunnelInfo>
-    <profileName>sshuser@localhost</profileName>
+    <profileName>local/sshuser@localhost</profileName>
     <color>0</color>
   </server>
   <server>
@@ -22,7 +22,7 @@
     <tunnelInfo>
       <port>22</port>
     </tunnelInfo>
-    <profileName>hutchuk@127.0.0.1</profileName>
+    <profileName>local/hutchuk@127.0.0.1</profileName>
     <color>0</color>
   </server>
 </settings>

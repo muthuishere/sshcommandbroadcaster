@@ -188,7 +188,7 @@ errorCount=0;
         for (ConnectionInfo connectionInfo : lstConnections) {
 
             
-            log.info("Starting connection" + connectionInfo.getProfileName() );
+            log.info("Starting connection" + connectionInfo.getOnlyProfileName() );
 
                 SshController sshController = connectServer(connectionInfo);
                 
@@ -197,7 +197,7 @@ errorCount=0;
                     errMsg = "Errors in connecting to Servers ";
                 }
 
-                errMsg = errMsg + "[" + connectionInfo.getProfileName() + "]";
+                errMsg = errMsg + "[" + connectionInfo.getOnlyProfileName() + "]";
                 
                errorCount++;
                }else{

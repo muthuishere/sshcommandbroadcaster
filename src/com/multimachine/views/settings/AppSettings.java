@@ -1,27 +1,18 @@
-/* 
- * Copyright 2013 Muthukumaran (https://github.com/muthuishere/).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
+
+
+
 package com.multimachine.views.settings;
 
-import com.multimachine.utils.TreeViewHelper;
+
 import com.multimachine.beans.ConnectionInfo;
 import com.multimachine.beans.Settings;
 import com.multimachine.controller.SettingsController;
 import com.multimachine.utils.ImportHelper;
 import com.multimachine.utils.StringHelper;
+import com.multimachine.utils.TreeViewHelper;
 import com.multimachine.views.components.ImportFileFilter;
+import com.multimachine.views.components.TreeCellRenderer;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
@@ -51,7 +42,8 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
     private static final Logger log = Logger.getLogger(AppSettings.class);
 
     boolean flgEditEnabled = false;
-
+    boolean flgDeleteEnabled = false;
+TreeCellRenderer treeCellRenderer=null;
     private DefaultTreeModel treeModel;
 
     /**
@@ -59,20 +51,12 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
      */
     public static final int RET_CANCEL = 0;
 
-    private DefaultListModel listServers = new DefaultListModel();
-
-    public DefaultListModel getListServers() {
-        return listServers;
-    }
-
-    public void setListServers(DefaultListModel listServers) {
-        this.listServers = listServers;
-    }
+  
     /**
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
- TreeViewHelper treeViewHelper =null;
+  TreeViewHelper treeViewHelper =null;
     private Settings settings = null;
     private SettingsController settingsController = null;
 
@@ -83,7 +67,7 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
         super(parent, modal);
         initComponents();
 
-        TreeViewHelper treeViewHelper = new TreeViewHelper();
+         treeViewHelper = new TreeViewHelper();
 
         progressbar.setVisible(false);
         URL iconURL = getClass().getResource("/com/multimachine/resources/red/16x16/app.png");
@@ -94,13 +78,28 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
         settingsController = new SettingsController();
         settings = settingsController.retrieveSettingsFromFile();
         lstServerProfiles.removeAll();
+        
+          DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
+
+        // Create the tree model and add the root node to it
+        treeModel = new DefaultTreeModel(root);
+        
+        lstServerProfiles.setModel(treeModel);
+        treeCellRenderer=new TreeCellRenderer(settings);
+        lstServerProfiles.setCellRenderer(treeCellRenderer);
+        
         if (null != settings && null != settings.getConnectionInfo()) {
 
             for (ConnectionInfo connectionInfo : settings.getConnectionInfo()) {
 
-                treeViewHelper.addNode(connectionInfo.getProfileName());
+              
 
+                   treeViewHelper.addNode(treeModel,connectionInfo.getProfileName());
+        
+                
+                  
             }
+            treeModel.reload();
 //
 //             treeViewHelper.addNode( "Node 1/Node 2/Node 3/Node 4");
 //         treeViewHelper.addNode( "Node 2/Node 3/Node 5");
@@ -109,8 +108,7 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
 //         treeViewHelper.addNode( "Node 1/Node 1/Node 3/Node 5");
 //         
         }
-        treeModel = treeViewHelper.getModel();
-        lstServerProfiles.setModel(treeModel);
+
 
         lstServerProfiles.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
@@ -130,6 +128,9 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
         });
     }
 
+   
+    
+    
     public void showError(String msg, String title) {
 
         JOptionPane.showMessageDialog(this, msg, title, JOptionPane.ERROR_MESSAGE);
@@ -144,6 +145,9 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
 
     private String getSelectedPath() {
 
+        if(null == lstServerProfiles.getSelectionPath() || null == lstServerProfiles.getSelectionPath().getLastPathComponent())
+            return "";
+        
         DefaultMutableTreeNode selected = (DefaultMutableTreeNode) lstServerProfiles.getSelectionPath().getLastPathComponent();
 
         String xpath = "";
@@ -166,7 +170,7 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
                 selected = (DefaultMutableTreeNode) selected.getParent();
             }
         }
-        if (null != xpath) {
+        if (null != xpath && xpath.length() > 0) {
             //remove the first / , as we need to neglect
             xpath = xpath.substring(1);
         }
@@ -178,45 +182,65 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
 //This method is useful only when the selection model allows a single selection.
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) lstServerProfiles.getLastSelectedPathComponent();
 
+        
         if (node == null) //Nothing is selected.     
         {
             return;
         }
 
+         flgEditEnabled = false;
+         flgDeleteEnabled=true;
         Object nodeInfo = node.getUserObject();
-        if (node.isLeaf()) {
+        if (node.isLeaf() && node.getUserObject() instanceof String && treeCellRenderer.isLeaf((String)node.getUserObject())) {
 
-            System.out.println("is leaf:" + getSelectedPath());
+            
+            
 
             flgEditEnabled = true;
 
         } else {
+            if(StringHelper.isEmpty(getSelectedPath())){
+                 flgDeleteEnabled=false;
+            }
             System.out.println("is folder:" + getSelectedPath());
 
         }
 
         btnEdit.setEnabled(flgEditEnabled);
-        btnDelete.setEnabled(flgEditEnabled);
+        btnDelete.setEnabled(flgDeleteEnabled);
     }
 
-    public ConnectionInfo getConnectInfoForProfile(int index) {
+    public ConnectionInfo getConnectInfoForProfile(String  profileName) {
 
         if (null != settings && null != settings.getConnectionInfo()) {
 
-            return settings.getConnectionInfo().get(index);
+            for(ConnectionInfo connectionInfo: settings.getConnectionInfo()){
+            
+                if(connectionInfo.getProfileName().equals(profileName))
+                    return connectionInfo;
+            }
 
         }
         return null;
     }
 
-    private void removeConnectionInfo(int index) {
+    private boolean removeConnectionInfo(String  profileName) {
 
         if (null != settings && null != settings.getConnectionInfo()) {
 
-            settings.getConnectionInfo().remove(index);
+            for(int i=0;i<settings.getConnectionInfo().size();i++){
+                ConnectionInfo connectionInfo=settings.getConnectionInfo().get(i);
+            if(connectionInfo.getProfileName().equals(profileName)){
+                    settings.getConnectionInfo().remove(i);
+                    return true;
+                    }
+            
+            }
+            
 
+          
         }
-
+  return false;
     }
 
     public boolean confirmMsg(String msg, String title) {
@@ -398,16 +422,23 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
 
         new Thread() {
             public void run() {
-
-                ServerDetails dialog = new ServerDetails("Add Server", null, new javax.swing.JFrame(), true);
+                String profileFolder="";
+if(!flgEditEnabled)
+    profileFolder=getSelectedPath();
+                ServerDetails dialog = new ServerDetails("Add Server", profileFolder,null, new javax.swing.JFrame(), true);
 
                 dialog.setVisible(true);
 
                 if (dialog.getReturnStatus() == ServerDetails.RET_OK) {
 
-                    log.info("Returned Ok");
+                    log.info("Returned Ok" + dialog.getConnectionInfo().toString());
                     settings.getConnectionInfo().add(dialog.getConnectionInfo());
-                    listServers.addElement(dialog.getConnectionInfo().getProfileName());
+                    
+                       treeViewHelper.addNode(treeModel,dialog.getConnectionInfo().getProfileName());
+        
+                  treeModel.reload();
+                  
+                  //  refreshModel();
                 } else {
 
                     log.info("Returned Cancel");
@@ -427,7 +458,7 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
                         treeModel.removeNodeFromParent(node);
                     }
                 }
-                
+                   treeModel.reload();
     }
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         new Thread() {
@@ -441,10 +472,14 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
 
                 if (dialog.getReturnStatus() == ServerDetails.RET_OK) {
 
+                    
                     log.info("Returned Ok");
+                     removeSelected();
                     connectionInfo = dialog.getConnectionInfo();
-                    removeSelected();
-                    treeViewHelper.addNode(dialog.getConnectionInfo().getProfileName());
+                   
+                      treeViewHelper.addNode(treeModel,dialog.getConnectionInfo().getProfileName());
+        
+                  treeModel.reload();
                    
                     //  listServers.addElement(dialog.getConnectionInfo().getProfileName());
                 } else {
@@ -457,23 +492,23 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-//        new Thread() {
-//            public void run() {
-//
-//                if (confirmMsg("Do you want to remove Server profile " + lstServerProfiles.getSelectedValue().toString() + "?", "Confirm Delete")) {
-//
-//                    
-//                    removeConnectionInfo(lstServerProfiles.getSelectedIndex());
-//                     removeSelected();
-//                    //listServers.remove(lstServerProfiles.getSelectedIndex());
-//                    //  listServers.addElement(dialog.getConnectionInfo().getProfileName());
-//                } else {
-//
-//                    log.info("Returned Cancel");
-//                }
-//
-//            }
-//        }.start();
+        new Thread() {
+            public void run() {
+
+                if (confirmMsg("Do you want to remove Server profile " + getSelectedPath() + "?", "Confirm Delete")) {
+
+                    
+                    removeConnectionInfo(getSelectedPath());
+                     removeSelected();
+                    //listServers.remove(lstServerProfiles.getSelectedIndex());
+                    //  listServers.addElement(dialog.getConnectionInfo().getProfileName());
+                } else {
+
+                    log.info("Returned Cancel");
+                }
+
+            }
+        }.start();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
@@ -498,9 +533,10 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
 
                     progressbar.setValue(progressbar.getValue() + 1);
                     settings.getConnectionInfo().add(connectInfo);
-                    listServers.addElement(connectInfo.getProfileName());
+                   // listServers.addElement(connectInfo.getProfileName());
+                    treeViewHelper.addNode(treeModel,connectInfo.getProfileName());
                 }
-
+            treeModel.reload();
                 progressbar.setValue(100);
 
             } catch (Exception ex) {
@@ -574,4 +610,7 @@ public class AppSettings extends javax.swing.JDialog implements TreeSelectionLis
     private javax.swing.JProgressBar progressbar;
     // End of variables declaration//GEN-END:variables
     private int returnStatus = RET_CANCEL;
+    
+    
+    
 }

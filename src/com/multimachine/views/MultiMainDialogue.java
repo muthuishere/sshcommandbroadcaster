@@ -27,7 +27,7 @@ import com.multimachine.listeners.MultiMessageBroadcaster;
 import com.multimachine.listeners.SshMessageListener;
 import com.multimachine.utils.StringHelper;
 import com.multimachine.views.components.CheckComboBox;
-import com.multimachine.views.settings.SettingsMain;
+import com.multimachine.views.settings.AppSettings;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.net.URL;
@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -64,7 +63,7 @@ public final class MultiMainDialogue extends javax.swing.JDialog implements SshM
 
             for (ConnectionInfo connectionInfo : settings.getConnectionInfo()) {
 
-                String profileName = connectionInfo.getProfileName();
+                String profileName = connectionInfo.getOnlyProfileName();
                 /*
                  if (set.contains(profileName)) {
                  profileName = modifyProfileName(set, profileName);
@@ -156,7 +155,7 @@ public final class MultiMainDialogue extends javax.swing.JDialog implements SshM
 
         for (ConnectionInfo connectionInfo : settings.getConnectionInfo()) {
 
-            if (profileName.equals(connectionInfo.getProfileName())) {
+            if (profileName.equals(connectionInfo.getOnlyProfileName())) {
                 return connectionInfo;
             }
         }
@@ -482,7 +481,7 @@ ConnectServer connectServer=new ConnectServer(lstConnectionInfo,sshMessageListen
         new Thread() {
             public void run() {
 
-                SettingsMain dialog = new SettingsMain(new javax.swing.JFrame(), true);
+                AppSettings dialog = new AppSettings(new javax.swing.JFrame(), true);
 
                 dialog.setVisible(true);
 

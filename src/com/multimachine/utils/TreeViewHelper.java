@@ -15,25 +15,10 @@ import java.util.*;
 public class TreeViewHelper extends DefaultHandler {
 
   private Stack nodes;
-  private DefaultTreeModel model = null;
-
-    public DefaultTreeModel getModel() {
-        return model;
-    }
+ 
   
   public TreeViewHelper() {
-        // Create the root node, I'm assuming that the delimited strings will have
-        // different string value at index 0
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
-
-        // Create the tree model and add the root node to it
-        model = new DefaultTreeModel(root);
-
-
-//        // Build the tree from the various string samples
-       
-
-       
+      
     }
   
   
@@ -44,7 +29,13 @@ public class TreeViewHelper extends DefaultHandler {
      * @param model The tree model
      * @param str The string to build the tree from
      */
-    public void removeNode(final String str) {
+  /**
+     * Builds a tree from a given forward slash delimited string.
+     * 
+     * @param model The tree model
+     * @param str The string to build the tree from
+     */
+    public void addNode(DefaultTreeModel model,final String str) {
         // Fetch the root node
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
 
@@ -75,43 +66,6 @@ public class TreeViewHelper extends DefaultHandler {
         }
     }
   
-   /**
-     * Builds a tree from a given forward slash delimited string.
-     * 
-     * @param model The tree model
-     * @param str The string to build the tree from
-     */
-    public void addNode(final String str) {
-        // Fetch the root node
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-
-        // Split the string around the delimiter
-        String [] strings = str.split("/");
-
-        // Create a node object to use for traversing down the tree as it 
-        // is being created
-        DefaultMutableTreeNode node = root;
-
-        // Iterate of the string array
-        for (String s: strings) {
-            // Look for the index of a node at the current level that
-            // has a value equal to the current string
-            int index = childIndex(node, s);
-
-            // Index less than 0, this is a new node not currently present on the tree
-            if (index < 0) {
-                // Add the new node
-                DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(s);
-                node.insert(newChild, node.getChildCount());
-                node = newChild;
-            }
-            // Else, existing node, skip to the next string
-            else {
-                node = (DefaultMutableTreeNode) node.getChildAt(index);
-            }
-        }
-    }
-
     /**
      * Returns the index of a child of a given node, provided its string value.
      * 
