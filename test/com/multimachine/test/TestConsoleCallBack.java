@@ -15,9 +15,9 @@
  */
 package com.multimachine.test;
 
-import com.multimachine.beans.ProfileStyle;
-import com.multimachine.listeners.MultiMessageBroadcaster;
-import com.multimachine.views.console.ConsoleWindow;
+import com.sshutils.beans.ProfileStyle;
+import com.sshutils.listeners.MultiMessageBroadcaster;
+import com.sshutils.views.console.ConsoleWindow;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -32,7 +32,7 @@ public class TestConsoleCallBack implements MultiMessageBroadcaster {
     ConsoleWindow console;
     private static final Logger log = Logger.getLogger(TestConsoleCallBack.class);
 
-    public TestConsoleCallBack(String bashName) {
+    public TestConsoleCallBack() {
         ArrayList<ProfileStyle> lstProfileStyles = new ArrayList<ProfileStyle>();
 
         ProfileStyle profileStyle = new ProfileStyle();
@@ -43,6 +43,10 @@ public class TestConsoleCallBack implements MultiMessageBroadcaster {
         console.setVisible(true);
     }
 
+    public static void main(String a[]){
+    
+      new TestConsoleCallBack();
+    }
  
 
     @Override

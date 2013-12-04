@@ -15,9 +15,8 @@
  */
 package com.multimachine.test;
 
-import com.multimachine.beans.ConnectionInfo;
-
-import com.multimachine.beans.ServerInfo;
+import com.sshutils.beans.ConnectionInfo;
+import com.sshutils.beans.ServerInfo;
 import java.util.Random;
 
 public class TestData {

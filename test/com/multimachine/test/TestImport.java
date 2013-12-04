@@ -15,9 +15,9 @@
  */
 package com.multimachine.test;
 
-import com.multimachine.beans.ConnectionInfo;
-import com.multimachine.utils.CryptHelper;
-import com.multimachine.utils.ImportHelper;
+import com.sshutils.beans.ConnectionInfo;
+import com.sshutils.utils.CryptHelper;
+import com.sshutils.utils.ImportHelper;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import org.apache.log4j.Logger;

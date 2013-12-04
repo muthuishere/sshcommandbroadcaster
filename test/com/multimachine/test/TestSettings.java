@@ -15,9 +15,9 @@
  */
 package com.multimachine.test;
 
-import com.multimachine.beans.ConnectionInfo;
-import com.multimachine.beans.Settings;
-import com.multimachine.controller.SettingsController;
+import com.sshutils.beans.ConnectionInfo;
+import com.sshutils.beans.Settings;
+import com.sshutils.controller.SettingsController;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;

@@ -15,7 +15,7 @@
  */
 package com.multimachine.test;
 
-import com.multimachine.utils.CryptHelper;
+import com.sshutils.utils.CryptHelper;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
