@@ -31,5 +31,5 @@ Roadmap
     A HTML based Client, with Jquery and rich GUI
     Export all command output
     Performance 
-    Attempt desktop application
+    Attempt desktop application- Ignored
    
